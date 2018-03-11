@@ -1,9 +1,9 @@
-# rigcheck v.1.0.10 (Jan 2018) based on ethOS 1.2.x by Sven Mielke #
+# rigcheck v.1.0.10 (March 2018) based on ethOS 1.3.x by Sven Mielke #
   
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
 Include with Telegram or Pushover.net Notifications. 
 
-![Showcase](https://bytebucket.org/s3v3n/rigcheck-for-ethos-1.2.x/raw/c1b38e8c28c212ccaa640c99648663ebeb8d210c/showcase_v1.png)
+![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
 
 ### Install rigcheck.sh to ethos ###
@@ -51,6 +51,8 @@ Finish
 
 [ OK ] HASHRATE SEEMS TO BE OK. 97.42 hash
 
+[ OK ] NO POSSIBLE MINER STALL DETECTED
+
 ##### VISUAL CONTROL #####
 MINER: claymore
 
@@ -88,7 +90,7 @@ Enjoy!
 2. GLOBAL SEARCH -> BotFather
 3. Create a new bot by typing/clicking /newbot
 4. Choose a user-friendly name for your bot, for example: awesomebot
-5. Choose a unique username for your bot (must ends with â€œbotâ€)
+5. Choose a unique username for your bot (must ends with "bot")
 6. copy your TOKEN e.g. 4334584910:AAEPmjlh84N62Lv3jGWEgOftlxxAfMhB1gs
 7. Start a conversation with your bot: GLOBAL SEARCH -> MY_BOT_NAME -> START
 8. To get the chat ID, open the following URL in your web-browser: https://api.telegram.org/bot[TOKEN]/getUpdates

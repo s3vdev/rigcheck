@@ -297,7 +297,7 @@ else
     echo "${GREEN}[ OK ]${NC} NO OVERHEAT DETECTED"
 fi
 
-sleep 0.3
+sleep 0.3 
 
 # Restart miner if hashrate missed or 0
 #if [[ "${hashRate_int}" = "0"  || "${hashRate_int}" -lt "${MIN_HASH}" ]];

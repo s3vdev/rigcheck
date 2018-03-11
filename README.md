@@ -3,7 +3,7 @@
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
 Include with Telegram or Pushover.net Notifications. 
 
-![Showcase](https://i.imgur.com/AP5Ugid.jpg)
+![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
 
 ### Install rigcheck.sh to ethos ###

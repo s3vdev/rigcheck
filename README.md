@@ -53,7 +53,6 @@ Finish
 
 [ OK ] NO POSSIBLE MINER STALL DETECTED
 
-### VISUAL CONTROL ###
 
 
 MINER: claymore

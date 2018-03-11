@@ -3,7 +3,7 @@
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
 Include with Telegram or Pushover.net Notifications. 
 
-![Showcase](https://bytebucket.org/s3v3n/rigcheck-for-ethos-1.2.x/raw/c1b38e8c28c212ccaa640c99648663ebeb8d210c/showcase_v1.png)
+![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
 
 ### Install rigcheck.sh to ethos ###
@@ -50,6 +50,8 @@ Finish
 [ OK ] NO OVERHEAT DETECTED
 
 [ OK ] HASHRATE SEEMS TO BE OK. 97.42 hash
+
+[ OK ] NO POSSIBLE MINER STALL DETECTED
 
 ##### VISUAL CONTROL #####
 MINER: claymore

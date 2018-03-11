@@ -33,48 +33,6 @@ Open rigcheck.sh and set your vars like min hash and/or telegram/pushover notifi
 Finish
 
 
-### VISUAL CONTROL ###
- 
-[ OK ] NO GPU CLOCK PROBLEM DETECTED
-
-[ OK ] NO GPU CRASH DETECTED
-
-[ OK ] NO GPU LOST DETECTED
-
-[ OK ] FAN RPM SEEMS TO BE OK
-
-[ OK ] POWER CABLE SEEMS TO BE OKAY AND WORKING
-
-[ OK ] NO HARDWARE ERROR DETECTED
-
-[ OK ] NO OVERHEAT DETECTED
-
-[ OK ] HASHRATE SEEMS TO BE OK. 97.42 hash
-
-[ OK ] NO POSSIBLE MINER STALL DETECTED
-
-
-
-MINER: claymore
-
-HASH: 97.42 hash
-
-MIN HASH: 90 hash
-
-GPUs: 4
-
-DRIVER: nvidia
-
-FAN RPM: 3150 3150 3150 3150
-
-UPTIME: 1 hours, 3 minutes
-
-
-rig2 seems to work properly since 1 hours, 3 minutes.
-
-
-
-
 ### Usage ###
 
 rigcheck.sh will run every x minute via cronjob. If is any error located, your miner will be reatarted or rig will be 

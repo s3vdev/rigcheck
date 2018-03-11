@@ -51,6 +51,8 @@ Finish
 
 [ OK ] HASHRATE SEEMS TO BE OK. 97.42 hash
 
+[ OK ] NO POSSIBLE MINER STALL DETECTED
+
 ##### VISUAL CONTROL #####
 MINER: claymore
 

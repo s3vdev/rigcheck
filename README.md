@@ -41,7 +41,7 @@ Finish
 
 [ OK ] NO GPU LOST DETECTED
 
-[ OK ] FAN RPM SEEMS TO BE OK 
+[ OK ] FAN RPM SEEMS TO BE OK
 
 [ OK ] POWER CABLE SEEMS TO BE OKAY AND WORKING
 
@@ -53,7 +53,9 @@ Finish
 
 [ OK ] NO POSSIBLE MINER STALL DETECTED
 
-##### VISUAL CONTROL #####
+### VISUAL CONTROL ###
+
+
 MINER: claymore
 
 HASH: 97.42 hash
@@ -68,7 +70,6 @@ FAN RPM: 3150 3150 3150 3150
 
 UPTIME: 1 hours, 3 minutes
 
-##### VISUAL CONTROL END #####
 
 rig2 seems to work properly since 1 hours, 3 minutes.
 

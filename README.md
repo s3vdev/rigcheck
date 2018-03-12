@@ -52,6 +52,37 @@ Try bash, calling sh make bash switch to posix mode and gives you some error
 
 ``` bash /home/ethos/rigcheck.sh ```
 
+Your results will be like this:
+``` 
+[ OK ] NO GPU CLOCK PROBLEM DETECTED
+[ OK ] NO GPU CRASH DETECTED
+[ OK ] NO GPU LOST DETECTED
+[ OK ] FAN RPM SEEMS TO BE OK
+[ OK ] POWER CABLE SEEMS TO BE OKAY AND WORKING
+[ OK ] NO HARDWARE ERROR DETECTED
+[ OK ] NO OVERHEAT DETECTED
+[ OK ] HASHRATE SEEMS TO BE OK. 24.16 (INT 24) hash
+[ OK ] NO POSSIBLE MINER STALL DETECTED
+[ OK ] GPU WATTAGE SEEMS TO BE OK
+
+
+##### VISUAL CONTROL #####
+STRATUM: enabled
+MINER: claymore v11.0
+TOTAL HASH: 24.16 hash
+YOUR MIN HASH:  hash
+GPUs: 1
+DRIVER: nvidia
+HASHES PER GPU: 24.16
+MEM PER GPU: 4576
+WATTS: 96
+FAN RPM: 3150
+UPTIME: 34 minutes
+AUTO REBOOTS 3
+##### VISUAL CONTROL END #####
+```
+
+
 
 ### Get status messages directly from your mining rigs if some errors occurred. ###
 

@@ -1,7 +1,7 @@
 # rigcheck v.1.0.14 (March 2018) based on ethOS 1.3.x by Sven Mielke #
   
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
-Include with Telegram or Pushover.net Notifications. 
+Include with Telegram and Pushover.net notifications. 
 
 ![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
@@ -27,11 +27,11 @@ Create an cronjob to and let your script run every 5m.
 
 ```sudo crontab -e```
 
-Insert the following line for run cronjob every 5 mins:
+Insert the following line to run cronjob every 5 minutes:
 
 ```*/5 * * * * /home/ethos/rigcheck.sh```
 
-Open rigcheck.sh and set your vars like MIN_HASH OR LOW_WATT and/or telegram/pushover for notifications.
+Open rigcheck.sh and set your vars like MIN_HASH or LOW_WATT and Telegram or Pushover vars (or booth) to get instant notifications.
 
 ``` MIN_HASH="0" ```
 
@@ -42,11 +42,16 @@ Finish :-)
 
 ### Usage ###
 
-rigcheck.sh will run every x minute via cronjob. If is any error located, your miner will be reatarted or rig will be 
+rigcheck will run for example every 5 minutes via cronjob. If any soft error is located, your miner will be reatarted or rig will be 
 rebooted automatically. 
-In addition, each miner restart or rig reboot is logged in /var/log/righeck.log with date and time.
+In addition, each miner restart or rig reboot is logged in /var/log/rigcheck.log with date and time.
 Enjoy!
   
+#### Testing #### 
+Try bash, calling sh make bash switch to posix mode and gives you some error
+
+``` bash /home/ethos/rigcheck.sh ```
+
 
 ### Get status messages directly from your mining rigs if some errors occurred. ###
 

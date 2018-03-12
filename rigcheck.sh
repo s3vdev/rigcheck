@@ -2,8 +2,8 @@
 
 ###################################################################################
 #
-# rigcheck v.1.0.12 (March 2018) based on ethOS 1.3.x by Sven Mielke
-# https://bitbucket.org/s3v3n/rigcheck-for-ethos-1.3.x/
+# rigcheck v.1.0.14 (March 2018) based on ethOS 1.3.x by Sven Mielke
+# https://bitbucket.org/s3v3n/rigcheck
 #
 # Run as cronjob every 5 min.
 #
@@ -35,9 +35,13 @@
 # register your free account and get all status message to your Phone/Tablet.
 #
 # Donation
-# BTC: 1Py8NMWNmtuZ5avyHFS977wZWrUWBMrfZH
-# ETH: 0x8e9e03f6895320081b15141f2dc5fabc40317e8c
-# BCH: 19sp8nSeDWN4FGrKSoGKdbeSgijGW8NBh9
+# BTC:  1Py8NMWNmtuZ5avyHFS977wZWrUWBMrfZH
+# ETH:  0x8e9e03f6895320081b15141f2dc5fabc40317e8c
+# BCH:  19sp8nSeDWN4FGrKSoGKdbeSgijGW8NBh9
+# BTCP: ﻿b1CCUUdgSXFkg2c65WZ855HmgS4jsC54VRg
+#
+# Testing (try bash, calling sh make bash switch to posix mode and gives you some error)
+# bash /home/ethos/rigcheck.sh
 #
 # ENJOY!
 ###################################################################################
@@ -48,14 +52,20 @@
 # If your hashrate is less than :min_hash, your miner will restart automatically
 MIN_HASH="";
 
+# IF your wattage is less than LOW_WATT, your miner will restart automatically
+LOW_WATT="";
+
 # Telegram Gateway Service
 TOKEN="";
 CHAT_ID="";
+
 
 # Pushover.net Gateway Service
 APP_TOKEN="";
 USER_KEY="";
 
+# Cron has diff env, some paths aren't found. adjust
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/ethos/bin:/opt/ethos/sbin
 ### END EDIT ###
 
 
@@ -79,7 +89,6 @@ miner="$(/opt/ethos/sbin/ethos-readconf miner)";
 nomine="$(cat /var/run/ethos/nomine.file)";
 adl_error="$(cat /var/run/ethos/adl_error.file)";
 # Get current total hashrate (as integer)
-#read -d. hashRate_int <<< "$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1 | tr ' ' '\n' | awk '{sum +=$1} END {print sum}')";
 hashRate="$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1 | tr ' ' '\n' | awk '{sum +=$1} END {print sum}')";
 # Get all availible GPUs
 gpus="$(cat /var/run/ethos/gpucount.file)";
@@ -87,9 +96,6 @@ gpus="$(cat /var/run/ethos/gpucount.file)";
 STATSPANEL="$(cat /var/run/ethos/url.file)";
 #Get Hostname
 RIGHOSTNAME="$(cat /etc/hostname)";
-
-# uptime in seconds
-#read -d. uptime < /proc/uptime
 
 
 ## NEW jan. 2018
@@ -118,28 +124,24 @@ stratum_check="$(/opt/ethos/sbin/ethos-readconf stratumenabled)";
 miner_version="$(cat /var/run/ethos/miner.versions | grep ${miner} | cut -d" " -f2 | head -1)";
 
 
-## NEW feb. 2018
-# uptime in seconds
-uptime="$(cat /proc/uptime)";
-uptime=${uptime%%.*}
-
-seconds=$(( uptime%60 ));
-minutes=$(( uptime/60%60 ));
-hours=$(( uptime/60/60%24 ));
-days=$(( uptime/60/60/24 ));
-#echo "$days days, $hours hours, $minutes minutes, $seconds seconds"
-
-
 ## NEW march 2018
 # Possible miner stall (look for status "possible miner stall" and restart rig)
 miner_stall="$(cat /var/run/ethos/status.file | grep "possible miner stall: check miner log")";
+# Rounding decimal hashrate values to INT (Thanks to Martin Lukas)
+hashRateInt=${hashRate%.*}
+# Using total seconds from uptime (Thanks to Martin Lukas)
+upinseconds="$(cat /proc/uptime | cut -d"." -f1)";
+# Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
+watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2-)";
 
 
 
 ## begin...
-# if we haven't had a minumum of 15 minutes since system started, bail
-if [ "${minutes}" -lt "15" ];
+
+# if we haven't had a minumum of 15 minutes (900 seconds) since system started, bail
+if [ "${upinseconds}" -lt "900" ];
 then
+  echo "${RED}[ WARNING ]${NC} Not enough time (15 minutes) since reboot (Uptime: ${human_uptime}), rigcheck bailing." ;
   echo `date +%d.%m.%Y_%H:%M:%S`  "Not enough time since reboot (Uptime: ${human_uptime}), rigcheck bailing." >> /var/log/rigcheck.log
   exit 1
 fi
@@ -174,6 +176,8 @@ notify () {
   fi
 }
 
+
+
 if [ "${defunct}" -gt "0" ];
 then
     echo "${RED}[ FAIL ]${NC} GPU clock problem: gpu clocks are too low - TRYING TO REBOOT THE RIG";
@@ -183,7 +187,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
 
-    /opt/ethos/bin/r # <= ethOS command to reboot
+    sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
 else
     echo "${GREEN}[ OK ]${NC} NO GPU CLOCK PROBLEM DETECTED"
@@ -200,7 +204,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
 
-    /opt/ethos/bin/r # <= ethOS command to reboot
+    sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
 else
     echo "${GREEN}[ OK ]${NC} NO GPU CRASH DETECTED"
@@ -221,7 +225,7 @@ then
 
             notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}"
 
-            /opt/ethos/bin/r # <= ethOS command to reboot
+            sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
         else
             echo "${GREEN}[ OK ]${NC} NO GPU LOST DETECTED"
@@ -240,7 +244,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}"
 
-    /opt/ethos/bin/r # <= ethOS command to reboot
+    sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
 else
     echo "${GREEN}[ OK ]${NC} FAN RPM SEEMS TO BE OK"
@@ -257,7 +261,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Power cable problem: PCI-E power cables not seated properly"
 
-    #/opt/ethos/bin/r # <= ethOS command to reboot
+    #sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
 else
     echo "${GREEN}[ OK ]${NC} POWER CABLE SEEMS TO BE OKAY AND WORKING"
@@ -274,7 +278,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Hardware error: possible gpu/riser/power failure."
 
-    /opt/ethos/bin/r # <= ethOS command to reboot
+    sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
 else
     echo "${GREEN}[ OK ]${NC} NO HARDWARE ERROR DETECTED"
@@ -291,7 +295,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Overheat: one or more gpus overheated"
 
-    #/opt/ethos/bin/r # <= ethOS command to reboot
+    #sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
 else
     echo "${GREEN}[ OK ]${NC} NO OVERHEAT DETECTED"
@@ -299,9 +303,8 @@ fi
 
 sleep 0.3
 
-# Restart miner if hashrate missed or 0
-#if [[ "${hashRate_int}" = "0"  || "${hashRate_int}" -lt "${MIN_HASH}" ]];
-if [[ "${hashRate}" = "0"  || "${hashRate}" -lt "${MIN_HASH}" ]];
+# Restart miner if hashrate less than MIN_HASH or 0
+if [[ "${hashRateInt}" = "0"  || "${hashRateInt}" -lt "${MIN_HASH}" ]];
 then
     echo "${RED}[ FAIL ]${NC} HASHARTE MISSMATCH - TRYING TO RESTART MINER";
 
@@ -310,13 +313,13 @@ then
 
     notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during missmatch. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_HASH}. Total uptime was: ${human_uptime}"
 
-    #/opt/ethos/bin/minestop
+    /opt/ethos/bin/minestop
 
     # Its better to restart rig on this error
-    /opt/ethos/bin/r # <= ethOS command to reboot
+    #sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
 else
-    echo "${GREEN}[ OK ]${NC} HASHRATE SEEMS TO BE OK. ${hashRate} hash"
+    echo "${GREEN}[ OK ]${NC} HASHRATE SEEMS TO BE OK. ${hashRate} (INT ${hashRateInt}) hash"
 fi
 
 sleep 0.3
@@ -331,7 +334,7 @@ then
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. Total uptime was: ${human_uptime}"
 
     # Its better to restart rig on this error
-    /opt/ethos/bin/r # <= ethOS command to reboot
+    sudo /opt/ethos/bin/r # <= ethOS command to reboot
 
 else
     echo "${GREEN}[ OK ]${NC} NO POSSIBLE MINER STALL DETECTED"
@@ -339,6 +342,25 @@ fi
 
 sleep 0.3
 
+
+IFS=' ' read -r -a watts <<< "$watts_raw"
+for watt in "${watts[@]}"; do
+    if ((watt < $LOW_WATT)); then
+
+        echo "${RED}[ FAIL ]${NC} GPU CARD WATTAGE TOO LOW. ACTUAL: ${watt} MINIMUM: ${LOW_WATT}";
+
+        # Write  reboots to logfile
+        echo `date +%d.%m.%Y_%H:%M:%S`  "Miner (${miner}) has restarted because GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}" >> /var/log/rigcheck.log
+
+        notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}"
+
+        /opt/ethos/bin/r # <= ethOS command to reboot
+    else
+        echo "${GREEN}[ OK ]${NC} GPU WATTAGE SEEMS TO BE OK"
+    fi
+done
+
+sleep 0.3
 
 #### PASS TESTINGS ####
 
@@ -349,15 +371,16 @@ echo "STRATUM: ${stratum_check}";
 echo "MINER: ${miner} ${miner_version}";
 echo "TOTAL HASH: ${hashRate} hash";
 echo "YOUR MIN HASH: ${MIN_HASH} hash";
-echo "HASHES PER GPU: ${miner_hashes}";
-echo "MEM PER GPU: ${gpu_mem}";
 echo "GPUs: ${gpus}";
 echo "DRIVER: ${driver}";
+echo "HASHES PER GPU: ${miner_hashes}";
+echo "MEM PER GPU: ${gpu_mem}";
+echo "WATTS: ${watts_raw}" | xargs;
 echo "FAN RPM: ${fanrpm}";
 echo "UPTIME: ${human_uptime}";
-echo "AUTO REBOOTS ${auto_reboots}"
+echo "AUTO REBOOTS ${auto_reboots}";
 echo "${GREEN}##### VISUAL CONTROL END #####${NC}";
 
 echo ""
-echo "${worker} seems to work properly since ${human_uptime}."
+echo "Rig ${worker} seems to work properly since ${human_uptime}."
 echo ""

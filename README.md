@@ -1,10 +1,15 @@
-# rigcheck v.1.0.10 (March 2018) based on ethOS 1.3.x by Sven Mielke #
+# rigcheck v.1.0.14 (March 2018) based on ethOS 1.3.x by Sven Mielke #
   
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
 Include with Telegram or Pushover.net Notifications. 
 
 ![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
+### UPDATES ###
+##### v1.0.14 - 2018/03/12 #####
++ Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
++ Fixing a problem with hashrate decimal values. Rounding to INT. (Thanks to Lukas Martin)
++ Fixed a problem with Uptime in minutes not being processed correctly. Using total seconds from uptime. (Thanks to Lukas Martin)
 
 ### Install rigcheck.sh to ethos ###
 
@@ -26,11 +31,13 @@ Insert the following line for run cronjob every 5 mins:
 
 ```*/5 * * * * /home/ethos/rigcheck.sh```
 
-Open rigcheck.sh and set your vars like min hash and/or telegram/pushover notification
+Open rigcheck.sh and set your vars like MIN_HASH OR LOW_WATT and/or telegram/pushover for notifications.
 
-```MIN_HASH="0"```
+``` MIN_HASH="0" ```
 
-Finish
+``` LOW_WATT="0" ```
+
+Finish :-)
 
 
 ### Usage ###

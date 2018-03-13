@@ -40,32 +40,10 @@ export currentVersion=currentVersion
 # sudo crontab -e
 # */5 * * * * /home/ethos/rigcheck.sh
 #
+# Edit your vars in rigcheck.config
+#
 # Finished!
 #
-# Telegram Notification (optional):
-# Get status messages directly from your mining rigs if some errors occurred.
-#
-# 1. Open your Telegram App
-# 2. GLOBAL SEARCH -> BotFather
-# 3. Create a new bot by typing/clicking /newbot
-# 4. Choose a user-friendly name for your bot, for example: awesomebot
-# 5. Choose a unique username for your bot (must end with 'bot' )
-# 6. copy your <TOKEN> e.g. 4334584910:AAEPmjlh84N62Lv3jGWEgOftlxxAfMhB1gs
-# 7. Start a conversation with your bot: GLOBAL SEARCH -> MY_BOT_NAME -> START
-# 8. To get the chat ID, open the following URL in your web-browser:
-#    https://api.telegram.org/bot<TOKEN>/getUpdates
-# 9. copy your chat id in var CHAT_ID and your token to TOKEN below
-#
-#
-# Pushover.net Notification (optional):
-# register your free account and get all status message to your Phone/Tablet.
-#
-# Donation
-# You can send donations to any of the following addresses:
-# BTC:  1Py8NMWNmtuZ5avyHFS977wZWrUWBMrfZH
-# ETH:  0x8e9e03f6895320081b15141f2dc5fabc40317e8c
-# BCH:  19sp8nSeDWN4FGrKSoGKdbeSgijGW8NBh9
-# BTCP: ﻿b1CCUUdgSXFkg2c65WZ855HmgS4jsC54VRg
 #
 # Testing (try bash, calling sh make bash switch to posix mode and gives you some error)
 # bash /home/ethos/rigcheck.sh
@@ -75,20 +53,12 @@ export currentVersion=currentVersion
 ###################################################################################
 
 
-
-### BEGINN EDIT ###
-
-. /home/ethos/rigcheck.config
-
-### END EDIT ###
-
-
-
-
-# Coloring for consolen output...
+## Auto update testing
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 NC="$(tput sgr0)" # No Color
+# Include user config file
+. /home/ethos/rigcheck_config.sh
 # Get worker name for Pushover service
 worker="$(/opt/ethos/sbin/ethos-readconf worker)";
 # Get human uptime

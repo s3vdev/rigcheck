@@ -2,17 +2,39 @@
 
 ###################################################################################
 #
-# rigcheck v.1.0.14 (March 2018) based on ethOS 1.3.x by Sven Mielke
-# https://bitbucket.org/s3v3n/rigcheck
+# The MIT License
 #
-# Run as cronjob every 5 min.
+# Copyright 2018 Sven Mielke <web@ddl.bz>.
+#
+# Repository: https://bitbucket.org/s3v3n/rigcheck.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+# rigcheck v.1.0.15 (March 2018) based on ethOS 1.3.x by Sven Mielke
+#
+# Run as cronjob, for example every 5 minutes
 #
 # Set chmod
 # chmod a+x /home/ethos/rigcheck.sh
 #
 # sudo crontab -e
 # */5 * * * * /home/ethos/rigcheck.sh
-#
 #
 # Finished!
 #
@@ -35,6 +57,7 @@
 # register your free account and get all status message to your Phone/Tablet.
 #
 # Donation
+# You can send donations to any of the following addresses:
 # BTC:  1Py8NMWNmtuZ5avyHFS977wZWrUWBMrfZH
 # ETH:  0x8e9e03f6895320081b15141f2dc5fabc40317e8c
 # BCH:  19sp8nSeDWN4FGrKSoGKdbeSgijGW8NBh9
@@ -49,7 +72,7 @@
 
 ### BEGINN EDIT ###
 
-# If your hashrate is less than :min_hash, your miner will restart automatically
+# If your hashrate is less than MIN_HASH, your miner will restart automatically
 MIN_HASH="";
 
 # IF your wattage is less than LOW_WATT, your miner will restart automatically
@@ -188,6 +211,7 @@ then
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
 
     sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    exit 1
 
 else
     echo "${GREEN}[ OK ]${NC} NO GPU CLOCK PROBLEM DETECTED"
@@ -205,6 +229,7 @@ then
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
 
     sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    exit 1
 
 else
     echo "${GREEN}[ OK ]${NC} NO GPU CRASH DETECTED"
@@ -226,6 +251,7 @@ then
             notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}"
 
             sudo /opt/ethos/bin/r # <= ethOS command to reboot
+            exit 1
 
         else
             echo "${GREEN}[ OK ]${NC} NO GPU LOST DETECTED"
@@ -245,6 +271,7 @@ then
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}"
 
     sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    exit 1
 
 else
     echo "${GREEN}[ OK ]${NC} FAN RPM SEEMS TO BE OK"
@@ -262,6 +289,7 @@ then
     notify "Rig ${worker} (${RIGHOSTNAME}) Power cable problem: PCI-E power cables not seated properly"
 
     #sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    #exit 1
 
 else
     echo "${GREEN}[ OK ]${NC} POWER CABLE SEEMS TO BE OKAY AND WORKING"
@@ -279,6 +307,7 @@ then
     notify "Rig ${worker} (${RIGHOSTNAME}) Hardware error: possible gpu/riser/power failure."
 
     sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    exit 1
 
 else
     echo "${GREEN}[ OK ]${NC} NO HARDWARE ERROR DETECTED"
@@ -296,6 +325,7 @@ then
     notify "Rig ${worker} (${RIGHOSTNAME}) Overheat: one or more gpus overheated"
 
     #sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    #exit 1
 
 else
     echo "${GREEN}[ OK ]${NC} NO OVERHEAT DETECTED"
@@ -315,8 +345,8 @@ then
 
     /opt/ethos/bin/minestop
 
-    # Its better to restart rig on this error
     #sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    #exit 1
 
 else
     echo "${GREEN}[ OK ]${NC} HASHRATE SEEMS TO BE OK. ${hashRate} (INT ${hashRateInt}) hash"
@@ -333,8 +363,8 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. Total uptime was: ${human_uptime}"
 
-    # Its better to restart rig on this error
     sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    exit 1
 
 else
     echo "${GREEN}[ OK ]${NC} NO POSSIBLE MINER STALL DETECTED"
@@ -354,7 +384,9 @@ for watt in "${watts[@]}"; do
 
         notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}"
 
-        /opt/ethos/bin/r # <= ethOS command to reboot
+        sudo /opt/ethos/bin/r # <= ethOS command to reboot
+        exit 1
+
     else
         echo "${GREEN}[ OK ]${NC} GPU WATTAGE SEEMS TO BE OK"
     fi

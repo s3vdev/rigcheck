@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Necessary for rigcheck_autoupdater.sh please don't edit it does automatically
+currentVersion="1.0.15";
+export currentVersion=currentVersion
+
 ###################################################################################
 #
 # The MIT License
@@ -26,7 +30,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# rigcheck v.1.0.15 (March 2018) based on ethOS 1.3.x by Sven Mielke
+# rigcheck based on ethOS 1.3.x
 #
 # Run as cronjob, for example every 5 minutes
 #
@@ -66,29 +70,16 @@
 # Testing (try bash, calling sh make bash switch to posix mode and gives you some error)
 # bash /home/ethos/rigcheck.sh
 #
+#
 # ENJOY!
 ###################################################################################
 
 
+
 ### BEGINN EDIT ###
 
-# If your hashrate is less than MIN_HASH, your miner will restart automatically
-MIN_HASH="";
+. /home/ethos/rigcheck.config
 
-# IF your wattage is less than LOW_WATT, your miner will restart automatically
-LOW_WATT="";
-
-# Telegram Gateway Service
-TOKEN="";
-CHAT_ID="";
-
-
-# Pushover.net Gateway Service
-APP_TOKEN="";
-USER_KEY="";
-
-# Cron has diff env, some paths aren't found. adjust
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/ethos/bin:/opt/ethos/sbin
 ### END EDIT ###
 
 
@@ -363,7 +354,6 @@ else
 fi
 
 sleep 0.3
-
 
 IFS=' ' read -r -a watts <<< "$watts_raw"
 for watt in "${watts[@]}"; do

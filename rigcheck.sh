@@ -117,13 +117,11 @@ hashRate="$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1 | tr '
 gpus="$(cat /var/run/ethos/gpucount.file)";
 # Get stats panel
 STATSPANEL="$(cat /var/run/ethos/url.file)";
-#Get Hostname
+# Get Hostname
 RIGHOSTNAME="$(cat /etc/hostname)";
-
-
-## NEW jan. 2018
+# Get driver
 driver="$(/opt/ethos/sbin/ethos-readconf driver)";
-# gpu crashed: reboot required
+# Get defunct gpu crashed: reboot required
 defunct="$(ps uax | grep ${miner} | grep defunct | grep -v grep | wc -l)";
 # GPU clock problem: gpu clocks are too low
 gpucrashed="$(cat /var/run/ethos/crashed_gpus.file | wc -w)";
@@ -145,9 +143,6 @@ gpu_mem="$(/opt/ethos/sbin/ethos-readdata mem | xargs | tr -s ' ')";
 stratum_check="$(/opt/ethos/sbin/ethos-readconf stratumenabled)";
 # Miner version
 miner_version="$(cat /var/run/ethos/miner.versions | grep ${miner} | cut -d" " -f2 | head -1)";
-
-
-## NEW march 2018
 # Possible miner stall (look for status "possible miner stall" and restart rig)
 miner_stall="$(cat /var/run/ethos/status.file | grep "possible miner stall: check miner log")";
 # Rounding decimal hashrate values to INT (Thanks to Martin Lukas)
@@ -157,9 +152,6 @@ upinseconds="$(cat /proc/uptime | cut -d"." -f1)";
 # Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
 watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2-)";
 
-
-
-## begin...
 
 # if we haven't had a minumum of 15 minutes (900 seconds) since system started, bail
 if [ "${upinseconds}" -lt "900" ];

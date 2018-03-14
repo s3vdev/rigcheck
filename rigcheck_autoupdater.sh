@@ -52,16 +52,13 @@
 ###################################################################################
 
 
-### BEGINN EDIT ###
-
 # If you wish that rigcheck can update itself, set autoUpdate to yes
 autoUpdate="yes";
-
-### END EDIT ###
-
+# END edit...
 
 
-## Auto update testing
+
+
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 NC="$(tput sgr0)" # No Color
@@ -71,9 +68,13 @@ NC="$(tput sgr0)" # No Color
 RIGHOSTNAME="$(cat /etc/hostname)";
 # Get worker name for Pushover service
 worker="$(/opt/ethos/sbin/ethos-readconf worker)";
-# Get version from bitbucket
-versionsCheck="$(curl -s https://bitbucket.org/s3v3n/rigcheck/raw/3b9ad8bb4b0ce2212bfc4a1f728c25772cdb466d/version)";
 
+
+
+load () {
+   result="$(curl -s https://api.bitbucket.org/2.0/repositories/s3v3n/rigcheck/commits | python -c 'import sys, json; print json.load(sys.stdin)["values"][0]["'${1}'"]')";
+   echo ${result}
+}
 
 notify () {
   if [[ -z "${TOKEN}" && -z "${APP_TOKEN}" ]];
@@ -99,36 +100,36 @@ notify () {
   fi
 }
 
+# Get hash from LAST commit
+echo "Checking hash from last commit...";
+hash="$(load hash)";
+lastCommit="$(load date)";
+modificationDate="$(date --date=$(stat -c%y rigcheck.sh | cut -c1-10) +"%s")";
+lastUpdate="$(date --date=$lastCommit +%s)";
+
+echo "Checking version...";
+
+sleep 0.3
 
 
-echo "Checking...";
-if [ "${versionsCheck}" \> "${currentVersion}" ];
+if [ "${modificationDate}" \< "${lastUpdate}" ];
 then
-    echo "${GREEN}A new version of rigcheck (current: ${currentVersion} new: ${versionsCheck}) for Rig ${worker} (${RIGHOSTNAME}) is available!${NC}. Download: https://bitbucket.org/s3v3n/rigcheck"
+
+    echo "${GREEN}A new version of rigcheck for Rig ${worker} (${RIGHOSTNAME}) is available!${NC}. Download: https://bitbucket.org/s3v3n/rigcheck"
 
     if [ "${autoUpdate}" = "yes" ];
     then
-
-        wget -N -q https://bitbucket.org/s3v3n/rigcheck/raw/3b9ad8bb4b0ce2212bfc4a1f728c25772cdb466d/rigcheck.sh -O /home/ethos/rigcheck.sh
+        wget -N -q https://bitbucket.org/s3v3n/rigcheck/raw/${hash}/rigcheck.sh -O /home/ethos/rigcheck.sh
         chmod a+x /home/ethos/rigcheck.sh
 
         sleep 0.3
 
-        # Set NEW version to this script
-        newVersion=${versionsCheck};
-
-        str="currentVersion=${currentVersion}";
-        find="${currentVersion}";
-        replace="${versionsCheck}";
-        result="${str//$find/$replace}";
-
-
-        notify "A new version of rigcheck (${versionsCheck}) was successfully installed on Rig ${worker} (${RIGHOSTNAME}), enjoy!"
-
+        notify "Autoupdater Status: A new version of rigcheck was successfully installed on Rig ${worker} (${RIGHOSTNAME}), enjoy!"
     else
-        notify "A new version of rigcheck (current: ${currentVersion} new: ${versionsCheck}) for Rig ${worker} (${RIGHOSTNAME}) is available! Download: https://bitbucket.org/s3v3n/rigcheck"
+        notify "Autoupdater Status: A new version of rigcheck for Rig ${worker} (${RIGHOSTNAME}) is available! Download: https://bitbucket.org/s3v3n/rigcheck"
     fi
 
 else
-    echo "${versionsCheck} seems to be up to date."
+    notify "Autoupdater Status: rigcheck seems to be up to date."
+    echo "${GREEN}rigcheck seems to be up to date.${NC}"
 fi

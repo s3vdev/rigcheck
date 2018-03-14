@@ -1,16 +1,12 @@
 #!/bin/bash
 
-# Necessary for rigcheck_autoupdater.sh please don't edit it does automatically
-currentVersion="1.0.15";
-export currentVersion=currentVersion
-
 ###################################################################################
 #
 # The MIT License
 #
 # Copyright 2018 Sven Mielke <web@ddl.bz>.
 #
-# Repository: https://bitbucket.org/s3v3n/rigcheck.
+# Repository: https://bitbucket.org/s3v3n/rigcheck - v1.0.15.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -52,8 +48,6 @@ export currentVersion=currentVersion
 # ENJOY!
 ###################################################################################
 
-
-## Auto update testing
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 NC="$(tput sgr0)" # No Color

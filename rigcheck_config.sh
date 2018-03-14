@@ -60,11 +60,11 @@ MIN_HASH="";
 
 
 # IF your wattage is less than LOW_WATT, your miner will restart automatically
-LOW_WATT="80";
+LOW_WATT="";
 
 # Telegram Gateway Service
-TOKEN="439656382:AAGRZjscLKJK_qzg5mlcPeyl1njlxIy60yg";
-CHAT_ID="265523534";
+TOKEN="";
+CHAT_ID="";
 
 
 # Pushover.net Gateway Service

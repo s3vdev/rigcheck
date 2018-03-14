@@ -101,35 +101,43 @@ notify () {
 }
 
 # Get hash from LAST commit
-echo "Checking hash from last commit...";
 hash="$(load hash)";
 lastCommit="$(load date)";
 modificationDate="$(date --date=$(stat -c%y rigcheck.sh | cut -c1-10) +"%s")";
 lastUpdate="$(date --date=$lastCommit +%s)";
 
-echo "Checking version...";
-
+echo "Checking for new commit...";
 sleep 0.3
 
 
 if [ "${modificationDate}" \< "${lastUpdate}" ];
 then
 
-    echo "${GREEN}A new version of rigcheck for Rig ${worker} (${RIGHOSTNAME}) is available!${NC}. Download: https://bitbucket.org/s3v3n/rigcheck"
+    echo "${GREEN}A new version of rigcheck for Rig ${worker} (${RIGHOSTNAME}) is available!${NC}. Download: https://bitbucket.org/s3v3n/rigcheck";
 
     if [ "${autoUpdate}" = "yes" ];
     then
+
+        # Backup old one
+        cp /home/ethos/rigcheck.sh /home/ethos/rigcheck__backup__.sh
+
+        # Download new version
         wget -N -q https://bitbucket.org/s3v3n/rigcheck/raw/${hash}/rigcheck.sh -O /home/ethos/rigcheck.sh
+
+        # Set chmod to new file
         chmod a+x /home/ethos/rigcheck.sh
 
         sleep 0.3
 
-        notify "Autoupdater Status: A new version of rigcheck was successfully installed on Rig ${worker} (${RIGHOSTNAME}), enjoy!"
+        echo "${GREEN}A new version of rigcheck was successfully installed, enjoy!${NC}";
+
+        notify "Autoupdater Status: A new version of rigcheck was successfully installed on Rig ${worker} (${RIGHOSTNAME}), enjoy! More: https://bitbucket.org/s3v3n/rigcheck";
     else
-        notify "Autoupdater Status: A new version of rigcheck for Rig ${worker} (${RIGHOSTNAME}) is available! Download: https://bitbucket.org/s3v3n/rigcheck"
+        notify "Autoupdater Status: A new version of rigcheck for Rig ${worker} (${RIGHOSTNAME}) is available! Download: https://bitbucket.org/s3v3n/rigcheck";
     fi
 
 else
-    notify "Autoupdater Status: rigcheck seems to be up to date."
-    echo "${GREEN}rigcheck seems to be up to date.${NC}"
+    echo "${GREEN}rigcheck seems to be up to date.${NC}";
+
+    notify "Autoupdater Status: rigcheck seems to be up to date. More: https://bitbucket.org/s3v3n/rigcheck"
 fi

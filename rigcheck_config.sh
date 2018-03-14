@@ -60,12 +60,11 @@ MIN_HASH="";
 
 
 # IF your wattage is less than LOW_WATT, your miner will restart automatically
-LOW_WATT="";
-
+LOW_WATT="80";
 
 # Telegram Gateway Service
-TOKEN="";
-CHAT_ID="";
+TOKEN="439656382:AAGRZjscLKJK_qzg5mlcPeyl1njlxIy60yg";
+CHAT_ID="265523534";
 
 
 # Pushover.net Gateway Service
@@ -78,7 +77,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/ethos/bin
 ### END EDIT ###
 
 # Check if some vars was set
-if [[ -z "${MIN_HASH}" || -z "${LOW_WATT}" ]];
+if [[ -z "${MIN_HASH}" && -z "${LOW_WATT}" && -z "${TOKEN}" && -z "${CHAT_ID}" ]];
 then
     echo "${RED}Please setup your vars in /home/ethos/rigcheck_config.sh!"${NC}
     exit 1

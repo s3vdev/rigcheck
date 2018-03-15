@@ -52,7 +52,7 @@
 ###################################################################################
 
 
-# If you wish that rigcheck can update itself, set autoUpdate to yes
+# If you wish that rigcheck can update itself, set autoUpdate to yes. Otherwise you get only a Telegram/Pushover notification about a new version.
 autoUpdate="yes";
 # END edit...
 

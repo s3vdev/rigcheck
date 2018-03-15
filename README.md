@@ -6,6 +6,10 @@ Include with Telegram and Pushover.net notifications.
 ![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
 ### UPDATES ###
+##### v1.0.15 - 2018/03/14 #####
++ User configuration vars are outsourced to rigcheck.config for NEW rigcheck_autoupdater.sh 
++ Added a fresh new autoupdater script, to get rigcheck updates automatically, if a new version is found on this repository. 
+
 ##### v1.0.14 - 2018/03/12 #####
 + Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
 + Fixing a problem with hashrate decimal values. Rounding to INT. (Thanks to Lukas Martin)
@@ -31,7 +35,7 @@ Insert the following line to run cronjob every 5 minutes:
 
 ```*/5 * * * * /home/ethos/rigcheck.sh```
 
-Open rigcheck.sh and set your vars like MIN_HASH or LOW_WATT and Telegram or Pushover vars (or booth) to get instant notifications.
+Open rigcheck_config.sh and set your vars like MIN_HASH or LOW_WATT and Telegram or Pushover vars (or booth) to get instant notifications.
 
 ``` MIN_HASH="0" ```
 
@@ -46,6 +50,28 @@ rigcheck will run for example every 5 minutes via cronjob. If any soft error is 
 rebooted automatically. 
 In addition, each miner restart or rig reboot is logged in /var/log/rigcheck.log with date and time.
 Enjoy!
+
+### Optional ###
+
+#### autoupdater ####
+Download rigcheck_autoupdater.sh to /home/ethOS to get automatically updates and notifications, if a new version of rigcheck is found in this repository.
+If you wish to get automatically updates just edit only ONE var:
+
+``` autoUpdate="yes"; ```
+
+Set chmod
+
+``` chmod a+x /home/ethos/rigcheck_autoupdater.sh ```
+
+Run as cronjob, every day at 0pm
+
+``` sudo crontab -e ```
+
+
+``` 0 0 * * * /home/ethos/rigcheck_autoupdater.sh ```
+
+
+
   
 #### Testing #### 
 Try bash, calling sh make bash switch to posix mode and gives you some error

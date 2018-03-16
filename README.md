@@ -114,7 +114,9 @@ Initialize a manually background process (after the first start, your cronjob wi
 
 ``` bash rigstatuscontrol.sh ``` 
 
-#### Testing #### 
+
+
+#### Testing rigcheck ####
 Try bash, calling sh make bash switch to posix mode and gives you some error
 
 ``` bash /home/ethos/rigcheck.sh ```

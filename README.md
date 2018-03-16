@@ -6,15 +6,18 @@ Include with Telegram and Pushover.net notifications.
 ![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
 ### UPDATES ###
+##
 ##### v1.0.15 - 2018/03/14 #####
 + User configuration vars are outsourced to rigcheck.config for NEW rigcheck_autoupdater.sh 
 + Added a fresh new autoupdater script, to get rigcheck updates automatically, if a new version is found on this repository. 
 
+##
 ##### v1.0.14 - 2018/03/12 #####
 + Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
 + Fixing a problem with hashrate decimal values. Rounding to INT. (Thanks to Lukas Martin)
 + Fixed a problem with Uptime in minutes not being processed correctly. Using total seconds from uptime. (Thanks to Lukas Martin)
 
+##
 ### Install rigcheck.sh to ethos ###
 
 Connect to you mining rig (directly or via ssh).
@@ -43,7 +46,7 @@ Open rigcheck_config.sh and set your vars like MIN_HASH or LOW_WATT and Telegram
 
 Finish :-)
 
-
+##
 ### Usage ###
 
 rigcheck will run for example every 5 minutes via cronjob. If any soft error is located, your miner will be reatarted or rig will be 
@@ -53,6 +56,7 @@ Enjoy!
 
 ### Optional ###
 
+##
 #### autoupdater ####
 Download rigcheck_autoupdater.sh to /home/ethOS to get automatically updates and notifications, if a new version of rigcheck is found in this repository.
 If you wish to get automatically updates just edit only ONE var:
@@ -71,7 +75,7 @@ Run as cronjob, every day at 0pm
 ``` 0 0 * * * /home/ethos/rigcheck_autoupdater.sh ```
 
 
-
+##
 #### rigcontrol via Telegram Messenger ####
 If you wish that you can control your ethOS Mining Rig than download rigstatuscontrol.sh and rigcontrol.sh to your folder /home/ethOS to manage your rig via Telegram Messenger.
 
@@ -115,7 +119,7 @@ Initialize a manually background process (after the first start, your cronjob wi
 ``` bash rigstatuscontrol.sh ``` 
 
 
-
+##
 #### Testing rigcheck ####
 Try bash, calling sh make bash switch to posix mode and gives you some error
 
@@ -152,10 +156,10 @@ AUTO REBOOTS 3
 ```
 
 
+##
+#### Get status messages directly from your mining rigs if some errors occurred. ####
 
-### Get status messages directly from your mining rigs if some errors occurred. ###
-
-### TELEGRAM ###
+#### TELEGRAM ####
 1. Open your Telegram App
 2. GLOBAL SEARCH -> BotFather
 3. Create a new bot by typing/clicking /newbot
@@ -171,8 +175,8 @@ AUTO REBOOTS 3
 ``` CHAT_ID="yxz" ```
 
 
-
-### Pushover.net - Push notification gateway ###
+##
+#### Pushover.net - Push notification gateway ####
 
 Get push notifications to your iOS, Android or Windows Phone or Tablet.
 

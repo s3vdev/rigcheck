@@ -104,7 +104,7 @@ Testing (try bash, calling sh make bash switch to posix mode and gives you some 
 
 To check if rigcontrol.sh is running, just type:
  
-``` bash rigstatuscontrol.php ``` 
+``` bash rigstatuscontrol.sh ``` 
 
 To get a list of active screens, just type:
 

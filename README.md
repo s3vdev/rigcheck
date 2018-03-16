@@ -108,7 +108,11 @@ To get a list of active screens, just type:
 
 To resume to a screen, just type:
 
-``` screen -r rigcontrol ``` 
+``` screen -r rigcontrol ```
+
+Initialize a manually background process (after the first start, your cronjob will check if this process is running, if not than the process will restart automatically):
+
+``` bash rigstatuscontrol.sh ``` 
 
 #### Testing #### 
 Try bash, calling sh make bash switch to posix mode and gives you some error

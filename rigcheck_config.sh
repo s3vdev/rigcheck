@@ -56,7 +56,7 @@
 ###################################################################################
 
 ### BEGINN EDIT ###
-
+ 
 # If your hashrate is less than MIN_HASH, your miner will restart automatically
 MIN_HASH="";
 

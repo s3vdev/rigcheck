@@ -38,15 +38,15 @@
 #
 # Finished!
 #
+# Testing (try bash, calling sh make bash switch to posix mode and gives you some error)
+# bash /home/ethos/rigcheck_autoupdater.sh
+#
 # Donation
 # You can send donations to any of the following addresses:
 # BTC:  1Py8NMWNmtuZ5avyHFS977wZWrUWBMrfZH
 # ETH:  0x8e9e03f6895320081b15141f2dc5fabc40317e8c
 # BCH:  19sp8nSeDWN4FGrKSoGKdbeSgijGW8NBh9
 # BTCP: ﻿b1CCUUdgSXFkg2c65WZ855HmgS4jsC54VRg
-#
-# Testing (try bash, calling sh make bash switch to posix mode and gives you some error)
-# bash /home/ethos/rigcheck_autoupdater.sh
 #
 # ENJOY!
 ###################################################################################

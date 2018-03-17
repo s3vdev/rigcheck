@@ -40,10 +40,15 @@
 #
 # Finished!
 #
-#
 # Testing (try bash, calling sh make bash switch to posix mode and gives you some error)
 # bash /home/ethos/rigcheck.sh
 #
+# Donation
+# You can send donations to any of the following addresses:
+# BTC:  1Py8NMWNmtuZ5avyHFS977wZWrUWBMrfZH
+# ETH:  0x8e9e03f6895320081b15141f2dc5fabc40317e8c
+# BCH:  19sp8nSeDWN4FGrKSoGKdbeSgijGW8NBh9
+# BTCP: ﻿b1CCUUdgSXFkg2c65WZ855HmgS4jsC54VRg
 #
 # ENJOY!
 ###################################################################################
@@ -105,7 +110,7 @@ hashRateInt=${hashRate%.*}
 # Using total seconds from uptime (Thanks to Martin Lukas)
 upinseconds="$(cat /proc/uptime | cut -d"." -f1)";
 # Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
-watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2-)";
+watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \t]*//')";
 
 
 # if we haven't had a minumum of 15 minutes (900 seconds) since system started, bail
@@ -132,7 +137,7 @@ notify () {
   then
     echo "Sending telegram...";
     #Telegram notification
-    curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${1}"
+    curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d text="${1}" >> /dev/null
   fi
 
   if [ -n "${APP_TOKEN}" ];
@@ -142,7 +147,7 @@ notify () {
     curl -s --form-string "token=${APP_TOKEN}" \
             --form-string "user=${USER_KEY}" \
             --form-string "message=${1}" \
-            https://api.pushover.net/1/messages.json
+            https://api.pushover.net/1/messages.json >> /dev/null
   fi
 }
 
@@ -353,7 +358,7 @@ echo "GPUs: ${gpus}";
 echo "DRIVER: ${driver}";
 echo "HASHES PER GPU: ${miner_hashes}";
 echo "MEM PER GPU: ${gpu_mem}";
-echo "WATTS: ${watts_raw}" | xargs;
+echo "WATTS: ${watts_raw}";
 echo "FAN RPM: ${fanrpm}";
 echo "UPTIME: ${human_uptime}";
 echo "AUTO REBOOTS ${auto_reboots}";

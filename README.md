@@ -79,45 +79,13 @@ Run as cronjob, every day at 0pm
 #### rigcontrol via Telegram Messenger ####
 If you wish that you can control your ethOS Mining Rig than download rigstatuscontrol.sh and rigcontrol.sh to your folder /home/ethOS to manage your rig via Telegram Messenger.
 
-Video: https://vimeo.com/260455169
+![Showcase](https://i.imgur.com/GESZMmV.jpg)
 
-Define a cronjob for rigstatus.sh, eg. every 5 minutes
+See it in action: https://vimeo.com/260455169
 
-``` sudo crontab -e ```
+Install Video: https://vimeo.com/260577442
 
-``` */5 * * * * /home/ethos/rigstatuscontrol.sh ```
-
-Set chmod
-
-``` chmod a+x /home/ethos/rigstatuscontrol.sh ```
-
-
-Telegram commands:
-
-``` /info <rigname> OR <workername> ```
-
-``` /minestop <rigname> OR <workername> ```
-
-``` /reboot <rigname> OR <workername> ```
-
-Testing (try bash, calling sh make bash switch to posix mode and gives you some error)
-
-To check if rigcontrol.sh is running, just type:
- 
-``` bash rigstatuscontrol.sh ``` 
-
-To get a list of active screens, just type:
-
-``` screen -ls ``` 
-
-To resume to a screen, just type:
-
-``` screen -r rigcontrol ```
-
-Initialize a manually background process (after the first start, your cronjob will check if this process is running, if not than the process will restart automatically):
-
-``` bash rigstatuscontrol.sh ``` 
-
+Repository: https://bitbucket.org/s3v3n/rigcontrol
 
 ##
 #### Testing rigcheck ####

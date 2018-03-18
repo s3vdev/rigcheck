@@ -111,7 +111,7 @@ nvidiaErrorCheck="$(/opt/ethos/sbin/ethos-readdata bios | xargs | tr -s ' ' | gr
 
 ##
 # Get current fan speeds
-fanrpm="$(/opt/ethos/sbin/ethos-readdata fanrpm | xargs | tr -s ' ')";
+fanrpm_raw="$(/opt/ethos/sbin/ethos-readdata fanrpm | xargs | tr -s ' ')";
 
 ##
 # Get current mining client,
@@ -310,19 +310,22 @@ function Json2Array() {
 
 Json2Array miner_hashes
 Json2Array watts
+Json2Array core
+Json2Array mem
+Json2Array fanrpm
 Index=0
 for Value in "${miner_hashes[@]}"
 do
     if [[ "${miner_hashes[$Index]/.*}" -lt $MIN_HASHRATE_GPU ]]; then
-        RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] HASH:${miner_hashes[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-        notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] HASH:${miner_hashes[$Index]}. [Miner was running for: $MinerTime]"
+        RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+        notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]"
         RestartMiner
     elif [[ "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
         RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] WATTS:${watts[$Index]}.[Miner was running for: $MinerTime]" | tee -a "$LogFile"
-        notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] WATTS:${watts[$Index]}. [Miner was running for: $MinerTime]"
+        notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]"
         RestartMiner
     else
-        GreenEcho "STATUS OK: GPU[$Index] HASH:${miner_hashes[$Index]} WATTS:${watts[$Index]}"
+        GreenEcho "STATUS OK: GPU[$Index] HASH:${miner_hashes[$Index]} WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}"
         sleep 0.3
     fi
     let Index++
@@ -377,8 +380,8 @@ sleep 0.3
 # Restart Rig if fanrpm empty/error (3 - 4)
 if [ "${fanCount}" -lt "${gpuCount}" ];
 then
-    RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - FAN ERROR: Rebooting during FAN ERROR. Fan RPM was: ${fanrpm}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. [Miner was running for: $MinerTime]"
+    RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - FAN ERROR: Rebooting during FAN ERROR. Fan RPM was: ${fanrpm_raw}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm_raw}. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
 else
@@ -468,7 +471,6 @@ then
     notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
-
 else
     GreenEcho "STATUS OK: NO POSSIBLE MINER STALL DETECTED";
 fi
@@ -488,11 +490,11 @@ echo "TOTAL HASH: ${hashRate} hash";
 echo "YOUR MIN HASH: ${MIN_Total_HASH} hash";
 echo "GPUs: ${gpus}";
 echo "DRIVER: ${driver}";
-echo "HASHES PER GPU: ${miner_hashes_raw}";
-echo "MEM PER GPU: ${gpu_mem}";
-echo "WATTS: ${watts_raw}";
-echo "FAN RPM: ${fanrpm}";
-echo "UPTIME: ${human_uptime}";
+#echo "HASHES PER GPU: ${miner_hashes_raw}";
+#echo "MEM PER GPU: ${gpu_mem}";
+#echo "WATTS: ${watts_raw}";
+#echo "FAN RPM: ${fanrpm_raw}";
+#echo "UPTIME: ${human_uptime}";
 echo "AUTO REBOOTS ${auto_reboots}";
 echo "REBOOT ON TO MANY MINER RESTARTS: ${RestartMinerCount}/${RebootMaxRestarts}"
 GreenEcho "##### VISUAL CONTROL END #####";

@@ -218,6 +218,9 @@ MinerTime=$(printf '%dh:%dm:%ds' $(($MinerSeconds/3600)) $(($MinerSeconds%3600/6
 #stats "miner";
 #exit 1
 
+##
+# Logfile
+$LogFile="/home/ethos/rigcheck.log";
 
 
 ##
@@ -278,7 +281,7 @@ function RestartMiner() {
 	##
 	# REBOOT ON TO MANY MINERRESTART'S
 	if [[ "${RestartMinerCount}" -ge "${RebootMaxRestarts}" ]]; then
-		echo "$(date "+%d.%m.%Y %T") REBOOT: To many miner restarts within 1h. [Miner was running for: $MinerTime]" >> /home/ethos/rigcheck.log
+		echo "$(date "+%d.%m.%Y %T") REBOOT: To many miner restarts within 1h. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
 
 		notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during to many miner restarts within 1h. [Miner was running for: $MinerTime]";
 
@@ -294,42 +297,64 @@ function RestartMiner() {
 
 
 
+function Json2Array() {
+	Index=0
+	x=' ' read -r -a Values <<< "`stats "${1}"`"
+	if [[ $Values != "null" ]]; then
+		for Value in "${Values[@]}"
+		do
+			eval "$1[$Index]"="$Value"
+		    let Index++
+		done
+	fi
+}
+
+
+Json2Array miner_hashes
+Json2Array watts
+Index=0
+for Value in "${miner_hashes[@]}"
+do
+    if [[ "${miner_hashes[$Index]/.*}" -lt $MIN_HASHRATE_GPU ]]; then
+        RedEcho "$(date "+%d.%m.%Y %T") RESTART: GPU[$Index] HASH:${miner_hashes[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+        notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] HASH:${miner_hashes[$Index]}. [Miner was running for: $MinerTime]"
+        RestartMiner
+    elif [[ "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
+        RedEcho "$(date "+%d.%m.%Y %T") RESTART: GPU[$Index] WATTS:${watts[$Index]}.[Miner was running for: $MinerTime]" | tee -a "$LogFile"
+        notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] WATTS:${watts[$Index]}. [Miner was running for: $MinerTime]"
+        RestartMiner
+    else
+        GreenEcho "STATUS OK: GPU[$Index] HASH:${miner_hashes[$Index]} WATTS:${watts[$Index]}"
+    fi
+    let Index++
+done
+
 
 
 if [ "${defunct}" -gt "0" ];
 then
-    RedEcho "[ FAIL ] GPU clock problem: gpu clocks are too low - TRYING TO REBOOT THE RIG!";
-
-    # Write  reboots to logfile
-    echo $(date "+%d.%m.%Y %T") "Rig has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
-    notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
-
+    RedEcho "[ FAIL ] GPU CLOCK PROBLEM: GPU clock problem: gpu clocks are too low - TRYING TO REBOOT THE RIG!" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: GPU HASH:${hashRate}. [Miner was running for: $MinerTime]"
     RestartMiner
-    exit 1
-
 else
     GreenEcho "[ OK ] NO GPU CLOCK PROBLEM DETECTED";
 fi
 
-sleep 0.3
+
 
 if [ "${gpucrashed}" -gt "0" ];
 then
-    RedEcho "[ FAIL ] GPU CRASHED - TRYING TO REBOOT THE RIG!";
-
-    # Write  reboots to logfile
-    echo $(date "+%d.%m.%Y %T") "Rig has rebooted during GPU CRASHED. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
-
-    notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
-
+    RedEcho "[ FAIL ] GPU CRASHED: Rebooting during GPU clock problem: gpu clocks are too low. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
-
 else
     GreenEcho "[ OK ] NO GPU CRASH DETECTED";
 fi
 
+
 sleep 0.3
+
 
 # Check for GPU error (NVIDIA)
 if [ "${driver}" = "nvidia" ];
@@ -337,127 +362,111 @@ then
 
     if [ -n "${nvidiaErrorCheck}" ];
         then
-            RedEcho "[ FAIL ] GPU LOST - TRYING TO REBOOT THE RIG!";
-
-            # Write  reboots to logfile
-            echo $(date "+%d.%m.%Y %T") "Rig has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
-
-            notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}"
-
+            RedEcho "[ FAIL ] GPU LOST: Rebooting during GPU ERROR. Error was: GPU LOST. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+            notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU ERROR. Error was: GPU LOST. [Miner was running for: $MinerTime]"
             RestartMiner
             exit 1
-
         else
             GreenEcho "[ OK ] NO GPU LOST DETECTED";
     fi
 fi
 
+
 sleep 0.3
+
 
 # Restart Rig if fanrpm empty/error (3 - 4)
 if [ "${fanCount}" -lt "${gpuCount}" ];
 then
-    RedEcho "[ FAIL ] FAN ERROR - TRYING TO REBOOT THE RIG!";
-
-    # Write  reboots to logfile
-    echo $(date "+%d.%m.%Y %T") "Rig has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
-
-    notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}"
-
+    RedEcho "[ FAIL ] FAN ERROR: Rebooting during FAN ERROR. Fan RPM was: ${fanrpm}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
-
 else
     GreenEcho "[ OK ] FAN RPM SEEMS TO BE OK";
 fi
 
+
 sleep 0.3
+
 
 if [ -n "${no_cables}" ];
 then
-    RedEcho "[ FAIL ] Power cable problem: PCI-E power cables not seated properly!";
-
-    # Write  reboots to logfile
-    echo $(date "+%d.%m.%Y %T") "Power cable problem: PCI-E power cables not seated properly" >> /home/ethos/rigcheck.log
-
-    notify "Rig ${worker} (${RIGHOSTNAME}) Power cable problem: PCI-E power cables not seated properly"
-
+    RedEcho "[ FAIL ] POWER CABLE PROBLEM: PCI-E power cables not seated properly! [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) Power cable problem: PCI-E power cables not seated properly. [Miner was running for: $MinerTime]"
     #RestartMiner
     #exit 1
-
 else
     GreenEcho "[ OK ] POWER CABLE SEEMS TO BE OKAY AND WORKING";
 fi
 
+
 sleep 0.3
+
 
 if [ -n "${adl_error}" ];
 then
-    RedEcho "[ FAIL ] Hardware error: possible gpu/riser/power failure!";
-
-    # Write  reboots to logfile
-    echo $(date "+%d.%m.%Y %T") "Hardware error: possible gpu/riser/power failure" >> /home/ethos/rigcheck.log
-
-    notify "Rig ${worker} (${RIGHOSTNAME}) Hardware error: possible gpu/riser/power failure."
-
+    RedEcho "[ FAIL ] HARDWARE ERROR: Possible gpu/riser/power failure! [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) Hardware error: possible gpu/riser/power failure. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
-
 else
     GreenEcho "[ OK ] NO HARDWARE ERROR DETECTED";
 fi
 
+
 sleep 0.3
+
 
 if [ -n "${overheat}" ];
 then
-    RedEcho "[ FAIL ] Overheat: one or more gpus overheated!";
-
-    # Write  reboots to logfile
-    echo $(date "+%d.%m.%Y %T") "Overheat: one or more gpus overheated" >> /home/ethos/rigcheck.log
-
-    notify "Rig ${worker} (${RIGHOSTNAME}) Overheat: one or more gpus overheated"
-
-    #RestartMiner
-    #sudo /opt/ethos/bin/r # <= ethOS command to reboot
-    #exit 1
-
+    RedEcho "[ FAIL ] OVERHEAT: One or more GPUS overheated! [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) Overheat: one or more gpus overheated"
+    RestartMiner
+    exit 1
 else
     GreenEcho "[ OK ] NO GPUS OVERHEATED";
 fi
 
+
 sleep 0.3
 
-# Restart miner if hashrate less than MIN_HASH or 0
-if [[ "${hashRateInt}" = "0"  || "${hashRateInt}" -lt "${MIN_HASH}" ]];
+
+# Restart miner if hashrate less than MIN_TOTAL_HASH or 0
+if [[ "${hashRateInt}" = "0" || "${hashRateInt}" -lt "${MIN_Total_HASH}" ]];
 then
-    RedEcho "[ FAIL ] HASHARTE MISSMATCH - TRYING TO RESTART MINER!";
-
-    # Write  reboots to logfile
-    echo $(date "+%d.%m.%Y %T") "Miner (${miner}) has restarted during hashrate missmatch. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_HASH}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
-
-    notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during missmatch. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_HASH}. Total uptime was: ${human_uptime}"
-
-    /opt/ethos/bin/minestop
-
-    #RestartMiner
-    #exit 1
-
+    RedEcho "[ FAIL ] TOTAL HASHARTE MISSMATCH: Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]";
+    notify "$(date "+%d.%m.%Y %T") - Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during total hashrate. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    RestartMiner
+    exit 1
 else
-    GreenEcho "[ OK ] HASHRATE SEEMS TO BE OK. ${hashRate} (INT ${hashRateInt}) hash";
+    GreenEcho "[ OK ] TOTAL HASHRATE SEEMS TO BE OK. ${hashRate} (INT ${hashRateInt}) hash";
 fi
 
+
 sleep 0.3
+
+
+IFS=' ' read -r -a watts <<< "$watts_raw"
+for watt in "${watts[@]}"; do
+    if ((watt < $LOW_WATT)); then
+        RedEcho "[ FAIL ] GPU CARD WATTAGE TOO LOW. ACTUAL: ${watt} MINIMUM: ${LOW_WATT}" | tee -a "$LogFile"
+        notify "$(date "+%d.%m.%Y %T") - Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. [Miner was running for: $MinerTime]"
+        RestartMiner
+        exit 1
+    else
+        GreenEcho "[ OK ] GPU WATTAGE SEEMS TO BE OK";
+    fi
+done
+
+
+sleep 0.3
+
 
 if [ -n "${miner_stall}" ];
 then
-    RedEcho "[ FAIL ] Miner stall: possible miner stall: check miner log!";
-
-    # Write  reboots to logfile
-    echo $(date "+%d.%m.%Y %T") "Miner stall: possible miner stall: check miner log" >> /home/ethos/rigcheck.log
-
-    notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. Total uptime was: ${human_uptime}"
-
+    RedEcho "[ FAIL ] MINER STALL: Rebooting during MINER STALL. Miner has been working for a while, but hash is zero. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
 
@@ -465,26 +474,6 @@ else
     GreenEcho "[ OK ] NO POSSIBLE MINER STALL DETECTED";
 fi
 
-sleep 0.3
-
-IFS=' ' read -r -a watts <<< "$watts_raw"
-for watt in "${watts[@]}"; do
-    if ((watt < $LOW_WATT)); then
-
-        RedEcho "[ FAIL ] GPU CARD WATTAGE TOO LOW. ACTUAL: ${watt} MINIMUM: ${LOW_WATT}";
-
-        # Write  reboots to logfile
-        echo $(date "+%d.%m.%Y %T") "Miner (${miner}) has restarted because GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
-
-        notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}"
-
-        RestartMiner
-        exit 1
-
-    else
-        GreenEcho "[ OK ] GPU WATTAGE SEEMS TO BE OK";
-    fi
-done
 
 sleep 0.3
 
@@ -497,7 +486,7 @@ echo "STRATUM: ${stratum_check}";
 echo "MINER: ${miner} ${miner_version}";
 echo " running for ${MinerTime}";
 echo "TOTAL HASH: ${hashRate} hash";
-echo "YOUR MIN HASH: ${MIN_HASH} hash";
+echo "YOUR MIN HASH: ${MIN_Total_HASH} hash";
 echo "GPUs: ${gpus}";
 echo "DRIVER: ${driver}";
 echo "HASHES PER GPU: ${miner_hashes}";

@@ -17,9 +17,19 @@ select yn in "Yes" "No"; do
         Yes )
 
         ##
-        # Setup MIN_HASH
-        echo "Please enter your <MIN_HASH> e.g. 100 (100 hash) for this ethOS mining rig, followed by [ENTER]:"
-        read min_hash
+        # Setup RebootMaxRestarts
+        echo "Please enter your <RebootMaxRestarts> e.g. 5 after 5 miner restarts your rig will reboot, followed by [ENTER]:"
+        read reboot_max_restarts
+
+        ##
+        # Setup MIN_TOTAL_HASH
+        echo "Please enter your <MIN_TOTAL_HASH> e.g. 100 (100 hash) for this ethOS mining rig, followed by [ENTER]:"
+        read min_total_hash
+
+        ##
+        # Setup MIN_HASHRATE_GPU
+        echo "Please enter your <MIN_HASHRATE_GPU> per GPU e.g. 24 (24 hash), followed by [ENTER]:"
+        read min_hashrate_gpu
 
         ##
         # Setup LOW_WATT
@@ -200,12 +210,18 @@ cat <<EOT >> /home/ethos/rigcheck_config.sh
 
 ### BEGINN EDIT ###
 
-# If your hashrate is less than MIN_HASH, your miner will restart automatically
-MIN_HASH="$min_hash";
+# REBOOT IF THERE ARE MORE THEN X MINER RESTARTS WITHIN 1H
+RebootMaxRestarts="$reboot_max_restarts";
 
+# Min hash per GPU
+MIN_HASHRATE_GPU="$min_hashrate_gpu";
+
+# If your hashrate is less than MIN_HASH, your miner will restart automatically
+MIN_TOTAL_HASH="$min_total_hash";
 
 # IF your wattage is less than LOW_WATT, your miner will restart automatically
 LOW_WATT="$low_watt";
+
 
 # Telegram Gateway Service
 TOKEN="$token";

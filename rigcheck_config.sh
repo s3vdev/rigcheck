@@ -57,12 +57,18 @@
 
 ### BEGINN EDIT ###
 
-# If your hashrate is less than MIN_HASH, your miner will restart automatically
-MIN_HASH="";
+# REBOOT IF THERE ARE MORE THEN X MINER RESTARTS WITHIN 1H
+RebootMaxRestarts="5";
 
+# Min hash per GPU
+MIN_HASHRATE_GPU="";
+
+# If your hashrate is less than MIN_HASH, your miner will restart automatically
+MIN_TOTAL_HASH="";
 
 # IF your wattage is less than LOW_WATT, your miner will restart automatically
 LOW_WATT="";
+
 
 # Telegram Gateway Service
 TOKEN="";

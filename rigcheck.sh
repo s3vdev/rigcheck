@@ -167,7 +167,7 @@ then
     RedEcho "[ FAIL ] GPU clock problem: gpu clocks are too low - TRYING TO REBOOT THE RIG!";
 
     # Write  reboots to logfile
-    echo `date +%d.%m.%Y_%H:%M:%S`  "Rig has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
+    echo $(date "+%d.%m.%Y %T") "Rig has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
 
@@ -185,7 +185,7 @@ then
     RedEcho "[ FAIL ] GPU CRASHED - TRYING TO REBOOT THE RIG!";
 
     # Write  reboots to logfile
-    echo `date +%d.%m.%Y_%H:%M:%S`  "Rig has rebooted during GPU CRASHED. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
+    echo $(date "+%d.%m.%Y %T") "Rig has rebooted during GPU CRASHED. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
 
@@ -207,7 +207,7 @@ then
             RedEcho "[ FAIL ] GPU LOST - TRYING TO REBOOT THE RIG!";
 
             # Write  reboots to logfile
-            echo `date +%d.%m.%Y_%H:%M:%S` "Rig has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
+            echo $(date "+%d.%m.%Y %T") "Rig has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
 
             notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}"
 
@@ -227,7 +227,7 @@ then
     RedEcho "[ FAIL ] FAN ERROR - TRYING TO REBOOT THE RIG!";
 
     # Write  reboots to logfile
-    echo `date +%d.%m.%Y_%H:%M:%S` "Rig has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
+    echo $(date "+%d.%m.%Y %T") "Rig has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}"
 
@@ -245,7 +245,7 @@ then
     RedEcho "[ FAIL ] Power cable problem: PCI-E power cables not seated properly!";
 
     # Write  reboots to logfile
-    echo `date +%d.%m.%Y_%H:%M:%S`  "Power cable problem: PCI-E power cables not seated properly" >> /home/ethos/rigcheck.log
+    echo $(date "+%d.%m.%Y %T") "Power cable problem: PCI-E power cables not seated properly" >> /home/ethos/rigcheck.log
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Power cable problem: PCI-E power cables not seated properly"
 
@@ -263,7 +263,7 @@ then
     RedEcho "[ FAIL ] Hardware error: possible gpu/riser/power failure!";
 
     # Write  reboots to logfile
-    echo `date +%d.%m.%Y_%H:%M:%S`  "Hardware error: possible gpu/riser/power failure" >> /home/ethos/rigcheck.log
+    echo $(date "+%d.%m.%Y %T") "Hardware error: possible gpu/riser/power failure" >> /home/ethos/rigcheck.log
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Hardware error: possible gpu/riser/power failure."
 
@@ -281,7 +281,7 @@ then
     RedEcho "[ FAIL ] Overheat: one or more gpus overheated!";
 
     # Write  reboots to logfile
-    echo `date +%d.%m.%Y_%H:%M:%S`  "Overheat: one or more gpus overheated" >> /home/ethos/rigcheck.log
+    echo $(date "+%d.%m.%Y %T") "Overheat: one or more gpus overheated" >> /home/ethos/rigcheck.log
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Overheat: one or more gpus overheated"
 
@@ -300,7 +300,7 @@ then
     RedEcho "[ FAIL ] HASHARTE MISSMATCH - TRYING TO RESTART MINER!";
 
     # Write  reboots to logfile
-    echo `date +%d.%m.%Y_%H:%M:%S`  "Miner (${miner}) has restarted during hashrate missmatch. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_HASH}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
+    echo $(date "+%d.%m.%Y %T") "Miner (${miner}) has restarted during hashrate missmatch. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_HASH}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
 
     notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during missmatch. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_HASH}. Total uptime was: ${human_uptime}"
 
@@ -320,7 +320,7 @@ then
     RedEcho "[ FAIL ] Miner stall: possible miner stall: check miner log!";
 
     # Write  reboots to logfile
-    echo `date +%d.%m.%Y_%H:%M:%S`  "Miner stall: possible miner stall: check miner log" >> /home/ethos/rigcheck.log
+    echo $(date "+%d.%m.%Y %T") "Miner stall: possible miner stall: check miner log" >> /home/ethos/rigcheck.log
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. Total uptime was: ${human_uptime}"
 
@@ -340,7 +340,7 @@ for watt in "${watts[@]}"; do
         RedEcho "[ FAIL ] GPU CARD WATTAGE TOO LOW. ACTUAL: ${watt} MINIMUM: ${LOW_WATT}";
 
         # Write  reboots to logfile
-        echo `date +%d.%m.%Y_%H:%M:%S`  "Miner (${miner}) has restarted because GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
+        echo $(date "+%d.%m.%Y %T") "Miner (${miner}) has restarted because GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
 
         notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}"
 

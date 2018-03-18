@@ -57,9 +57,11 @@ RedEcho(){ echo -e "$(tput setaf 1)$1$(tput sgr0)"; }
 GreenEcho(){ echo -e "$(tput setaf 2)$1$(tput sgr0)"; }
 YellowEcho(){ echo -e "$(tput setaf 3)$1$(tput sgr0)"; }
 
+##
 # Include user config file
 . /home/ethos/rigcheck_config.sh
 
+##
 # Check if vars on rigcheck_config.sh was set
 if [[ -z "${MIN_HASH}" && -z "${LOW_WATT}" && -z "${TOKEN}" && -z "${CHAT_ID}" ]]
 then
@@ -67,66 +69,17 @@ then
     exit 1
 fi
 
-# Get worker name for Pushover service
-worker="$(/opt/ethos/sbin/ethos-readconf worker)";
-# Get human uptime
-human_uptime="$(/opt/ethos/bin/human_uptime)";
-# Check bioses or powertune to get nvidia "Unable to determine.." error
-nvidiaErrorCheck="$(/opt/ethos/sbin/ethos-readdata bios | xargs | tr -s ' ' | grep "Unable to determine the device handle")";
-# Get current fan speeds
-fanrpm="$(/opt/ethos/sbin/ethos-readdata fanrpm | xargs | tr -s ' ')";
-# Get current mining client,
-miner="$(/opt/ethos/sbin/ethos-readconf miner)";
-# Hardware error: graphics driver did not load
-nomine="$(cat /var/run/ethos/nomine.file)";
-adl_error="$(cat /var/run/ethos/adl_error.file)";
-# Get current total hashrate (as integer)
-hashRate="$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1 | tr ' ' '\n' | awk '{sum +=$1} END {print sum}')";
-# Get all availible GPUs
-gpus="$(cat /var/run/ethos/gpucount.file)";
-# Get stats panel
-STATSPANEL="$(cat /var/run/ethos/url.file)";
-# Get Hostname
-RIGHOSTNAME="$(cat /etc/hostname)";
-# Get driver
-driver="$(/opt/ethos/sbin/ethos-readconf driver)";
-# Get defunct gpu crashed: reboot required
-defunct="$(ps uax | grep ${miner} | grep defunct | grep -v grep | wc -l)";
-# GPU clock problem: gpu clocks are too low
-gpucrashed="$(cat /var/run/ethos/crashed_gpus.file | wc -w)";
-# Count fans (6)
-fanCount="$(/opt/ethos/sbin/ethos-readdata fanrpm | xargs | tr -s ' ' | wc -w)";
-# Count active GPUs
-gpuCount="$(cat /var/run/ethos/gpucount.file)";
-# power cable problem
-no_cables="$(cat /var/run/ethos/nvidia_error.file)";
-# overheat: one or more gpus overheated
-overheat="$(cat /var/run/ethos/overheat.file)";
-# Miner Hashes
-miner_hashes="$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1)";
-# Check ethOS auto reboots
-auto_reboots="$(/opt/ethos/sbin/ethos-readconf autoreboot)";
-# Show GPU memory
-gpu_mem="$(/opt/ethos/sbin/ethos-readdata mem | xargs | tr -s ' ')";
-# Stratum status
-stratum_check="$(/opt/ethos/sbin/ethos-readconf stratumenabled)";
-# Miner version
-miner_version="$(cat /var/run/ethos/miner.versions | grep ${miner} | cut -d" " -f2 | head -1)";
-# Possible miner stall (look for status "possible miner stall" and restart rig)
-miner_stall="$(cat /var/run/ethos/status.file | grep "possible miner stall: check miner log")";
-# Rounding decimal hashrate values to INT (Thanks to Martin Lukas)
-hashRateInt=${hashRate%.*}
+
+##
 # Using total seconds from uptime (Thanks to Martin Lukas)
 upinseconds="$(cat /proc/uptime | cut -d"." -f1)";
-# Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
-watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \t]*//')";
 
-
+##
 # if we haven't had a minumum of 15 minutes (900 seconds) since system started, bail
 if [ "${upinseconds}" -lt "900" ];
 then
-  RedEcho "[ WARNING ] System booted less then (15 minutes) (Uptime: ${human_uptime}), rigcheck bailing!";
-  echo $(date "+%d.%m.%Y %T") "System booted less then (15 minutes) (Uptime: ${human_uptime}), rigcheck bailing!" >> /home/ethos/rigcheck.log
+  RedEcho "[ WARNING ] System booted less then 15 minutes ago. (Uptime: ${human_uptime}), rigcheck bailing!";
+  echo $(date "+%d.%m.%Y %T") "System booted less then 15 minutes ago. (Uptime: ${human_uptime}), rigcheck bailing!" >> /home/ethos/rigcheck.log
   exit 1
 fi
 
@@ -135,6 +88,149 @@ load () {
    result="$(curl -s ${STATSPANEL}/?json=yes | python -c 'import sys, json; print json.load(sys.stdin)["rigs"]["'${RIGHOSTNAME}'"]["'${1}'"]')";
    echo ${result}
 }
+
+
+stats () {
+   result="$(cat /var/run/ethos/stats.json | python -c 'import sys, json; print json.load(sys.stdin)["'${1}'"]')";
+   echo ${result}
+}
+
+
+
+##
+# Get worker name for Pushover service
+worker="$(/opt/ethos/sbin/ethos-readconf worker)";
+
+##
+# Get human uptime
+human_uptime="$(/opt/ethos/bin/human_uptime)";
+
+##
+# Check bioses or powertune to get nvidia "Unable to determine.." error
+nvidiaErrorCheck="$(/opt/ethos/sbin/ethos-readdata bios | xargs | tr -s ' ' | grep "Unable to determine the device handle")";
+
+##
+# Get current fan speeds
+fanrpm="$(/opt/ethos/sbin/ethos-readdata fanrpm | xargs | tr -s ' ')";
+
+##
+# Get current mining client,
+miner="$(/opt/ethos/sbin/ethos-readconf miner)";
+
+##
+# Hardware error: graphics driver did not load
+nomine="$(cat /var/run/ethos/nomine.file)";
+
+##
+# Get adl_errors
+adl_error="$(cat /var/run/ethos/adl_error.file)";
+
+##
+# Get current total hashrate (as integer)
+hashRate="$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1 | tr ' ' '\n' | awk '{sum +=$1} END {print sum}')";
+
+##
+# Get all availible GPUs
+gpus="$(cat /var/run/ethos/gpucount.file)";
+
+##
+# Get stats panel
+STATSPANEL="$(cat /var/run/ethos/url.file)";
+
+##
+# Get Hostname
+RIGHOSTNAME="$(cat /etc/hostname)";
+
+##
+# Get driver
+driver="$(/opt/ethos/sbin/ethos-readconf driver)";
+
+##
+# Get defunct gpu crashed: reboot required
+defunct="$(ps uax | grep ${miner} | grep defunct | grep -v grep | wc -l)";
+
+##
+# GPU clock problem: gpu clocks are too low
+gpucrashed="$(cat /var/run/ethos/crashed_gpus.file | wc -w)";
+
+##
+# Count fans (6)
+fanCount="$(/opt/ethos/sbin/ethos-readdata fanrpm | xargs | tr -s ' ' | wc -w)";
+
+##
+# Count active GPUs
+gpuCount="$(cat /var/run/ethos/gpucount.file)";
+
+##
+# power cable problem
+no_cables="$(cat /var/run/ethos/nvidia_error.file)";
+
+##
+# overheat: one or more gpus overheated
+overheat="$(cat /var/run/ethos/overheat.file)";
+
+##
+# Miner Hashes
+miner_hashes="$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1)";
+
+##
+# Check ethOS auto reboots
+auto_reboots="$(/opt/ethos/sbin/ethos-readconf autoreboot)";
+
+##
+# Show GPU memory
+gpu_mem="$(/opt/ethos/sbin/ethos-readdata mem | xargs | tr -s ' ')";
+
+##
+# Stratum status
+stratum_check="$(/opt/ethos/sbin/ethos-readconf stratumenabled)";
+
+##
+# Miner version
+miner_version="$(cat /var/run/ethos/miner.versions | grep ${miner} | cut -d" " -f2 | head -1)";
+
+##
+# Possible miner stall (look for status "possible miner stall" and restart rig)
+miner_stall="$(cat /var/run/ethos/status.file | grep "possible miner stall: check miner log")";
+
+##
+# Rounding decimal hashrate values to INT (Thanks to Martin Lukas)
+hashRateInt=${hashRate%.*}
+
+##
+# Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
+watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \t]*//')";
+
+##
+# Get miner runtime in seconds
+MinerSeconds=$(stats "miner_secs")
+
+##
+# stats.josn ethOS ver. 1.3.x
+StatsJson="/var/run/ethos/stats.json"
+
+
+##
+# Human miner runtime
+MinerTime=$(printf '%dh:%dm:%ds' $(($MinerSeconds/3600)) $(($MinerSeconds%3600/60)) $(($MinerSeconds%60)))
+#echo $MinerTime;
+
+#stats "miner";
+#exit 1
+
+
+
+##
+# Check if minercounter have a value
+if [[ ! -f /dev/shm/restartminercount ]]; then
+	echo "0" > /dev/shm/restartminercount
+fi
+
+##
+# Get restart miner counts
+RestartMinerCount=$(cat /dev/shm/restartminercount)
+
+
 
 notify () {
   if [[ -z "${TOKEN}" && -z "${APP_TOKEN}" ]];
@@ -161,6 +257,44 @@ notify () {
 }
 
 
+### EXIT IF STATS.JSON IS MISSING
+if [[ ! -f "$StatsJson" ]]; then
+	echo "$(date "+%d.%m.%Y %T") EXIT: stats.json not available yet.(make sure ethosdistro is ver: 1.3.0+)" | tee -a "$LogFile"
+	notify "Rig ${worker} (${RIGHOSTNAME}) Error: stats.json not available yet.(make sure ethOS is ver: 1.3.0+. Run sudo ethos-update in your terminal.";
+	exit 1
+fi
+
+function RestartMiner() {
+
+	##
+	# COUNT RESTARTS IF MINNER IS RUNNING FOR LESS THEN 1H
+	if [[ $MinerSeconds -lt 3600 ]]; then
+		let RestartMinerCount++
+		echo "$RestartMinerCount" > /dev/shm/restartminercount
+	else
+		echo "0" > /dev/shm/restartminercount
+	fi
+
+	##
+	# REBOOT ON TO MANY MINERRESTART'S
+	if [[ $RestartMinerCount -ge $RebootMaxRestarts ]]; then
+		echo "$(date "+%d.%m.%Y %T") REBOOT: To many miner restarts within 1h. [Miner was running for: $MinerTime]" >> /home/ethos/rigcheck.log
+
+		notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during to many miner restarts within 1h. [Miner was running for: $MinerTime]";
+
+		rm "$StatsJson" -f
+		sudo reboot
+		exit
+	fi
+	
+	rm "$StatsJson" -f
+	sudo /opt/ethos/bin/minestop
+	exit
+}
+
+
+
+
 
 if [ "${defunct}" -gt "0" ];
 then
@@ -168,10 +302,9 @@ then
 
     # Write  reboots to logfile
     echo $(date "+%d.%m.%Y %T") "Rig has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
-
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
 
-    sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    RestartMiner
     exit 1
 
 else
@@ -189,7 +322,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s.  Total uptime was: ${human_uptime}"
 
-    sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    RestartMiner
     exit 1
 
 else
@@ -211,7 +344,7 @@ then
 
             notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}"
 
-            sudo /opt/ethos/bin/r # <= ethOS command to reboot
+            RestartMiner
             exit 1
 
         else
@@ -231,7 +364,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}"
 
-    sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    RestartMiner
     exit 1
 
 else
@@ -249,7 +382,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Power cable problem: PCI-E power cables not seated properly"
 
-    #sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    #RestartMiner
     #exit 1
 
 else
@@ -267,7 +400,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Hardware error: possible gpu/riser/power failure."
 
-    sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    RestartMiner
     exit 1
 
 else
@@ -285,11 +418,12 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) Overheat: one or more gpus overheated"
 
+    #RestartMiner
     #sudo /opt/ethos/bin/r # <= ethOS command to reboot
     #exit 1
 
 else
-    GreenEcho "[ OK ] ";
+    GreenEcho "[ OK ] NO GPUS OVERHEATED";
 fi
 
 sleep 0.3
@@ -306,7 +440,7 @@ then
 
     /opt/ethos/bin/minestop
 
-    #sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    #RestartMiner
     #exit 1
 
 else
@@ -324,7 +458,7 @@ then
 
     notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. Total uptime was: ${human_uptime}"
 
-    sudo /opt/ethos/bin/r # <= ethOS command to reboot
+    RestartMiner
     exit 1
 
 else
@@ -344,7 +478,7 @@ for watt in "${watts[@]}"; do
 
         notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}"
 
-        sudo /opt/ethos/bin/r # <= ethOS command to reboot
+        RestartMiner
         exit 1
 
     else
@@ -361,6 +495,7 @@ echo ""
 GreenEcho "##### VISUAL CONTROL #####";
 echo "STRATUM: ${stratum_check}";
 echo "MINER: ${miner} ${miner_version}";
+echo " running for ${MinerTime}";
 echo "TOTAL HASH: ${hashRate} hash";
 echo "YOUR MIN HASH: ${MIN_HASH} hash";
 echo "GPUs: ${gpus}";
@@ -371,6 +506,7 @@ echo "WATTS: ${watts_raw}";
 echo "FAN RPM: ${fanrpm}";
 echo "UPTIME: ${human_uptime}";
 echo "AUTO REBOOTS ${auto_reboots}";
+echo "REBOOT ON TO MANY MINER RESTARTS: ${RestartMinerCount}/${RebootMaxRestarts}"
 GreenEcho "##### VISUAL CONTROL END #####";
 
 echo ""

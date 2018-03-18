@@ -58,7 +58,7 @@
 ### BEGINN EDIT ###
 
 # REBOOT IF THERE ARE MORE THEN X MINER RESTARTS WITHIN 1H
-RebootMaxRestarts="5";
+RebootMaxRestarts="";
 
 # Min hash per GPU
 MIN_HASHRATE_GPU="";

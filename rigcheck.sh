@@ -125,8 +125,8 @@ watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \
 # if we haven't had a minumum of 15 minutes (900 seconds) since system started, bail
 if [ "${upinseconds}" -lt "900" ];
 then
-  RedEcho "[ WARNING ] Not enough time (15 minutes) since reboot (Uptime: ${human_uptime}), rigcheck bailing!";
-  echo `date +%d.%m.%Y_%H:%M:%S`  "Not enough time since reboot (Uptime: ${human_uptime}), rigcheck bailing!" >> /home/ethos/rigcheck.log
+  RedEcho "[ WARNING ] System booted less then (15 minutes) (Uptime: ${human_uptime}), rigcheck bailing!";
+  echo $(date "+%d.%m.%Y %T") "System booted less then (15 minutes) (Uptime: ${human_uptime}), rigcheck bailing!" >> /home/ethos/rigcheck.log
   exit 1
 fi
 

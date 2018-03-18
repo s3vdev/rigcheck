@@ -56,8 +56,17 @@
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 NC="$(tput sgr0)" # No Color
+
 # Include user config file
 . /home/ethos/rigcheck_config.sh
+
+# Check if vars on rigcheck_config.sh was set
+if [[ -z "${MIN_HASH}" && -z "${LOW_WATT}" && -z "${TOKEN}" && -z "${CHAT_ID}" ]]
+then
+    echo "${RED}Please setup your vars in /home/ethos/rigcheck_config.sh!${NC}";
+    exit 1
+fi
+
 # Get worker name for Pushover service
 worker="$(/opt/ethos/sbin/ethos-readconf worker)";
 # Get human uptime

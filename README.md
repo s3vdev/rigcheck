@@ -1,4 +1,4 @@
-# rigcheck v.1.0.15 (March 2018) based on ethOS 1.3.x by Sven Mielke #
+# rigcheck v.1.0.16 (March 2018) based on ethOS 1.3.x by Sven Mielke #
   
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
 Include with Telegram and Pushover.net notifications. 
@@ -6,6 +6,12 @@ Include with Telegram and Pushover.net notifications.
 ![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
 ### UPDATES ###
+##
+##### v1.0.16 - 2018/03/18 #####
++ Add install.sh script to automatically install rigcheck
++ Add new check features
+
+
 ##
 ##### v1.0.15 - 2018/03/14 #####
 + User configuration vars are outsourced to rigcheck.config for NEW rigcheck_autoupdater.sh 

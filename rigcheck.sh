@@ -325,6 +325,7 @@ do
         RestartMiner
     else
         GreenEcho "STATUS OK: GPU[$Index] HASH:${miner_hashes[$Index]} WATTS:${watts[$Index]}"
+        sleep 0.3
     fi
     let Index++
 done
@@ -447,17 +448,17 @@ fi
 sleep 0.3
 
 
-IFS=' ' read -r -a watts <<< "$watts_raw"
-for watt in "${watts[@]}"; do
-    if ((watt < $LOW_WATT)); then
-        RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - GPU CARD WATTAGE TOO LOW. ACTUAL: ${watt} MINIMUM: ${LOW_WATT}" | tee -a "$LogFile"
-        notify "$(date "+%d.%m.%Y %T") - Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. [Miner was running for: $MinerTime]"
-        RestartMiner
-        exit 1
-    else
-        GreenEcho "STATUS OK: GPU WATTAGE SEEMS TO BE OK";
-    fi
-done
+#IFS=' ' read -r -a watts <<< "$watts_raw"
+#for watt in "${watts[@]}"; do
+#    if ((watt < $LOW_WATT)); then
+#        RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - GPU CARD WATTAGE TOO LOW. ACTUAL: ${watt} MINIMUM: ${LOW_WATT}" | tee -a "$LogFile"
+#        notify "$(date "+%d.%m.%Y %T") - Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. [Miner was running for: $MinerTime]"
+#        RestartMiner
+#        exit 1
+#    else
+#        GreenEcho "STATUS OK: GPU WATTAGE SEEMS TO BE OK";
+#    fi
+#done
 
 
 sleep 0.3
@@ -499,5 +500,5 @@ echo "REBOOT ON TO MANY MINER RESTARTS: ${RestartMinerCount}/${RebootMaxRestarts
 GreenEcho "##### VISUAL CONTROL END #####";
 
 echo ""
-echo "Rig ${worker} seems to work properly since ${human_uptime}."
+GreenEcho "Rig ${worker} seems to work properly since ${human_uptime}."
 echo ""

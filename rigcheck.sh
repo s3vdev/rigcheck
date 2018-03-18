@@ -6,7 +6,7 @@
 #
 # Copyright 2018 Sven Mielke <web@ddl.bz>.
 #
-# Repository: https://bitbucket.org/s3v3n/rigcheck - v1.0.15.
+# Repository: https://bitbucket.org/s3v3n/rigcheck - v1.0.16.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -495,7 +495,7 @@ echo "DRIVER: ${driver}";
 #echo "WATTS: ${watts_raw}";
 #echo "FAN RPM: ${fanrpm_raw}";
 #echo "UPTIME: ${human_uptime}";
-echo "AUTO REBOOTS ${auto_reboots}";
+#echo "AUTO REBOOTS ${auto_reboots}";
 echo "REBOOT ON TO MANY MINER RESTARTS: ${RestartMinerCount}/${RebootMaxRestarts}"
 GreenEcho "##### VISUAL CONTROL END #####";
 

@@ -57,13 +57,20 @@ autoUpdate="yes";
 # END edit...
 
 
+RedEcho(){ echo -e "$(tput setaf 1)$1$(tput sgr0)"; }
+GreenEcho(){ echo -e "$(tput setaf 2)$1$(tput sgr0)"; }
+YellowEcho(){ echo -e "$(tput setaf 3)$1$(tput sgr0)"; }
 
-
-RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-NC="$(tput sgr0)" # No Color
 # Include user config file
 . /home/ethos/rigcheck_config.sh
+
+# Check if vars on rigcheck_config.sh was set
+if [[ -z "${MIN_HASH}" && -z "${LOW_WATT}" && -z "${TOKEN}" && -z "${CHAT_ID}" ]]
+then
+    RedEcho "Please setup your vars in /home/ethos/rigcheck_config.sh!";
+    exit 1
+fi
+
 # Get Hostname
 RIGHOSTNAME="$(cat /etc/hostname)";
 # Get worker name for Pushover service
@@ -113,7 +120,7 @@ sleep 0.3
 if [ "${modificationDate}" \< "${lastUpdate}" ];
 then
 
-    echo "${GREEN}A new version of rigcheck for Rig ${worker} (${RIGHOSTNAME}) is available!${NC}. Download: https://bitbucket.org/s3v3n/rigcheck";
+    GreenEcho "A new version of rigcheck for Rig ${worker} (${RIGHOSTNAME}) is available!. Download: https://bitbucket.org/s3v3n/rigcheck";
 
     if [ "${autoUpdate}" = "yes" ];
     then
@@ -129,7 +136,7 @@ then
 
         sleep 0.3
 
-        echo "${GREEN}A new version of rigcheck was successfully installed, enjoy!${NC}";
+        GreenEcho "A new version of rigcheck was successfully installed, enjoy!";
 
         notify "Autoupdater Status: A new version of rigcheck was successfully installed on Rig ${worker} (${RIGHOSTNAME}), enjoy! More: https://bitbucket.org/s3v3n/rigcheck";
     else
@@ -137,7 +144,7 @@ then
     fi
 
 else
-    echo "${GREEN}rigcheck seems to be up to date.${NC}";
+    GreenEcho "rigcheck seems to be up to date.";
 
     notify "Autoupdater Status: rigcheck seems to be up to date. More: https://bitbucket.org/s3v3n/rigcheck"
 fi

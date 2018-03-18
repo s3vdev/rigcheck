@@ -8,8 +8,8 @@ Include with Telegram and Pushover.net notifications.
 ### UPDATES ###
 ##
 ##### v1.0.16 - 2018/03/18 #####
-+ Add install.sh script to automatically install rigcheck
-+ Add new check features
++ Added install.sh script to automatically install rigcheck on your ethOS mining rig
++ Added new check features
 
 
 ##

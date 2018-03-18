@@ -125,9 +125,8 @@ watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \
 # if we haven't had a minumum of 15 minutes (900 seconds) since system started, bail
 if [ "${upinseconds}" -lt "900" ];
 then
-  RedEcho "[ WARNING ]";
-  echo "Not enough time (15 minutes) since reboot (Uptime: ${human_uptime}), rigcheck bailing." ;
-  echo `date +%d.%m.%Y_%H:%M:%S`  "Not enough time since reboot (Uptime: ${human_uptime}), rigcheck bailing." >> /home/ethos/rigcheck.log
+  RedEcho "[ WARNING ] Not enough time (15 minutes) since reboot (Uptime: ${human_uptime}), rigcheck bailing!";
+  echo `date +%d.%m.%Y_%H:%M:%S`  "Not enough time since reboot (Uptime: ${human_uptime}), rigcheck bailing!" >> /home/ethos/rigcheck.log
   exit 1
 fi
 
@@ -165,8 +164,7 @@ notify () {
 
 if [ "${defunct}" -gt "0" ];
 then
-    RedEcho "[ FAIL ]";
-    echo "GPU clock problem: gpu clocks are too low - TRYING TO REBOOT THE RIG";
+    RedEcho "[ FAIL ] GPU clock problem: gpu clocks are too low - TRYING TO REBOOT THE RIG!";
 
     # Write  reboots to logfile
     echo `date +%d.%m.%Y_%H:%M:%S`  "Rig has rebooted during GPU clock problem: gpu clocks are too low. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
@@ -177,16 +175,14 @@ then
     exit 1
 
 else
-    GreenEcho "[ OK ]";
-    echo "NO GPU CLOCK PROBLEM DETECTED";
+    GreenEcho "[ OK ] NO GPU CLOCK PROBLEM DETECTED";
 fi
 
 sleep 0.3
 
 if [ "${gpucrashed}" -gt "0" ];
 then
-    RedEcho "[ FAIL ]";
-    echo "GPU CRASHED - TRYING TO REBOOT THE RIG";
+    RedEcho "[ FAIL ] GPU CRASHED - TRYING TO REBOOT THE RIG!";
 
     # Write  reboots to logfile
     echo `date +%d.%m.%Y_%H:%M:%S`  "Rig has rebooted during GPU CRASHED. Hashrate was: ${hashRate} MH/s. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
@@ -197,8 +193,7 @@ then
     exit 1
 
 else
-    GreenEcho "[ OK ]";
-    echo "NO GPU CRASH DETECTED";
+    GreenEcho "[ OK ] NO GPU CRASH DETECTED";
 fi
 
 sleep 0.3
@@ -209,8 +204,7 @@ then
 
     if [ -n "${nvidiaErrorCheck}" ];
         then
-            RedEcho "[ FAIL ]";
-            echo "GPU LOST - TRYING TO REBOOT THE RIG";
+            RedEcho "[ FAIL ] GPU LOST - TRYING TO REBOOT THE RIG!";
 
             # Write  reboots to logfile
             echo `date +%d.%m.%Y_%H:%M:%S` "Rig has rebooted during GPU ERROR. Error was: GPU LOST. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
@@ -221,8 +215,7 @@ then
             exit 1
 
         else
-            GreenEcho "[ OK ]";
-            echo "NO GPU LOST DETECTED";
+            GreenEcho "[ OK ] NO GPU LOST DETECTED";
     fi
 fi
 
@@ -231,8 +224,7 @@ sleep 0.3
 # Restart Rig if fanrpm empty/error (3 - 4)
 if [ "${fanCount}" -lt "${gpuCount}" ];
 then
-    RedEcho "[ FAIL ]";
-    echo "FAN ERROR - TRYING TO REBOOT THE RIG";
+    RedEcho "[ FAIL ] FAN ERROR - TRYING TO REBOOT THE RIG!";
 
     # Write  reboots to logfile
     echo `date +%d.%m.%Y_%H:%M:%S` "Rig has rebooted during FAN ERROR. Fan RPM was: ${fanrpm}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
@@ -243,16 +235,14 @@ then
     exit 1
 
 else
-    GreenEcho "[ OK ]";
-    echo "FAN RPM SEEMS TO BE OK";
+    GreenEcho "[ OK ] FAN RPM SEEMS TO BE OK";
 fi
 
 sleep 0.3
 
 if [ -n "${no_cables}" ];
 then
-    RedEcho "[ FAIL ]";
-    echo "Power cable problem: PCI-E power cables not seated properly";
+    RedEcho "[ FAIL ] Power cable problem: PCI-E power cables not seated properly!";
 
     # Write  reboots to logfile
     echo `date +%d.%m.%Y_%H:%M:%S`  "Power cable problem: PCI-E power cables not seated properly" >> /home/ethos/rigcheck.log
@@ -263,16 +253,14 @@ then
     #exit 1
 
 else
-    GreenEcho "[ OK ]";
-    echo "POWER CABLE SEEMS TO BE OKAY AND WORKING";
+    GreenEcho "[ OK ] POWER CABLE SEEMS TO BE OKAY AND WORKING";
 fi
 
 sleep 0.3
 
 if [ -n "${adl_error}" ];
 then
-    RedEcho "[ FAIL ]";
-    echo "Hardware error: possible gpu/riser/power failure";
+    RedEcho "[ FAIL ] Hardware error: possible gpu/riser/power failure!";
 
     # Write  reboots to logfile
     echo `date +%d.%m.%Y_%H:%M:%S`  "Hardware error: possible gpu/riser/power failure" >> /home/ethos/rigcheck.log
@@ -283,16 +271,14 @@ then
     exit 1
 
 else
-    GreenEcho "[ OK ]";
-    echo "NO HARDWARE ERROR DETECTED";
+    GreenEcho "[ OK ] NO HARDWARE ERROR DETECTED";
 fi
 
 sleep 0.3
 
 if [ -n "${overheat}" ];
 then
-    RedEcho "[ FAIL ]";
-    echo "Overheat: one or more gpus overheated";
+    RedEcho "[ FAIL ] Overheat: one or more gpus overheated!";
 
     # Write  reboots to logfile
     echo `date +%d.%m.%Y_%H:%M:%S`  "Overheat: one or more gpus overheated" >> /home/ethos/rigcheck.log
@@ -303,8 +289,7 @@ then
     #exit 1
 
 else
-    GreenEcho "[ OK ]";
-    echo "NO OVERHEAT DETECTED";
+    GreenEcho "[ OK ] ";
 fi
 
 sleep 0.3
@@ -312,8 +297,7 @@ sleep 0.3
 # Restart miner if hashrate less than MIN_HASH or 0
 if [[ "${hashRateInt}" = "0"  || "${hashRateInt}" -lt "${MIN_HASH}" ]];
 then
-    RedEcho "[ FAIL ]";
-    echo "HASHARTE MISSMATCH - TRYING TO RESTART MINER";
+    RedEcho "[ FAIL ] HASHARTE MISSMATCH - TRYING TO RESTART MINER!";
 
     # Write  reboots to logfile
     echo `date +%d.%m.%Y_%H:%M:%S`  "Miner (${miner}) has restarted during hashrate missmatch. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_HASH}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
@@ -326,16 +310,14 @@ then
     #exit 1
 
 else
-    GreenEcho "[ OK ]";
-    echo "HASHRATE SEEMS TO BE OK. ${hashRate} (INT ${hashRateInt}) hash";
+    GreenEcho "[ OK ] HASHRATE SEEMS TO BE OK. ${hashRate} (INT ${hashRateInt}) hash";
 fi
 
 sleep 0.3
 
 if [ -n "${miner_stall}" ];
 then
-    RedEcho "[ FAIL ]";
-    echo "Miner stall: possible miner stall: check miner log";
+    RedEcho "[ FAIL ] Miner stall: possible miner stall: check miner log!";
 
     # Write  reboots to logfile
     echo `date +%d.%m.%Y_%H:%M:%S`  "Miner stall: possible miner stall: check miner log" >> /home/ethos/rigcheck.log
@@ -346,8 +328,7 @@ then
     exit 1
 
 else
-    GreenEcho "[ OK ]";
-    echo "NO POSSIBLE MINER STALL DETECTED";
+    GreenEcho "[ OK ] NO POSSIBLE MINER STALL DETECTED";
 fi
 
 sleep 0.3
@@ -356,9 +337,7 @@ IFS=' ' read -r -a watts <<< "$watts_raw"
 for watt in "${watts[@]}"; do
     if ((watt < $LOW_WATT)); then
 
-        RedEcho "[ FAIL ]";
-        echo "GPU CARD WATTAGE TOO LOW. ACTUAL: ${watt} MINIMUM: ${LOW_WATT}";
-
+        RedEcho "[ FAIL ] GPU CARD WATTAGE TOO LOW. ACTUAL: ${watt} MINIMUM: ${LOW_WATT}";
 
         # Write  reboots to logfile
         echo `date +%d.%m.%Y_%H:%M:%S`  "Miner (${miner}) has restarted because GPU wattage too low. Actual wattage: ${watt}. Minimum wattage: ${LOW_WATT}. Total uptime was: ${human_uptime}" >> /home/ethos/rigcheck.log
@@ -369,8 +348,7 @@ for watt in "${watts[@]}"; do
         exit 1
 
     else
-        GreenEcho "[ OK ]";
-        echo "GPU WATTAGE SEEMS TO BE OK";
+        GreenEcho "[ OK ] GPU WATTAGE SEEMS TO BE OK";
     fi
 done
 

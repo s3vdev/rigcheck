@@ -268,7 +268,7 @@ function RestartMiner() {
 
 	##
 	# COUNT RESTARTS IF MINNER IS RUNNING FOR LESS THEN 1H
-	if [[ $MinerSeconds -lt 3600 ]]; then
+	if [[ "${MinerSeconds}" -lt 3600 ]]; then
 		let RestartMinerCount++
 		echo "$RestartMinerCount" > /dev/shm/restartminercount
 	else
@@ -277,7 +277,7 @@ function RestartMiner() {
 
 	##
 	# REBOOT ON TO MANY MINERRESTART'S
-	if [[ $RestartMinerCount -ge $RebootMaxRestarts ]]; then
+	if [[ "${RestartMinerCount}" -ge "${RebootMaxRestarts}" ]]; then
 		echo "$(date "+%d.%m.%Y %T") REBOOT: To many miner restarts within 1h. [Miner was running for: $MinerTime]" >> /home/ethos/rigcheck.log
 
 		notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during to many miner restarts within 1h. [Miner was running for: $MinerTime]";
@@ -286,7 +286,7 @@ function RestartMiner() {
 		sudo reboot
 		exit
 	fi
-	
+
 	rm "$StatsJson" -f
 	sudo /opt/ethos/bin/minestop
 	exit

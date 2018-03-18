@@ -220,7 +220,7 @@ MinerTime=$(printf '%dh:%dm:%ds' $(($MinerSeconds/3600)) $(($MinerSeconds%3600/6
 
 ##
 # Logfile
-$LogFile="/home/ethos/rigcheck.log";
+LogFile="/home/ethos/rigcheck.log";
 
 
 ##

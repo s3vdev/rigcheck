@@ -171,7 +171,7 @@ overheat="$(cat /var/run/ethos/overheat.file)";
 
 ##
 # Miner Hashes
-miner_hashes="$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1)";
+miner_hashes_raw="$(tail -10 /var/run/ethos/miner_hashes.file | sort -V | tail -1)";
 
 ##
 # Check ethOS auto reboots
@@ -282,9 +282,7 @@ function RestartMiner() {
 	# REBOOT ON TO MANY MINERRESTART'S
 	if [[ "${RestartMinerCount}" -ge "${RebootMaxRestarts}" ]]; then
 		echo "$(date "+%d.%m.%Y %T") REBOOT: To many miner restarts within 1h. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-
 		notify "Rig ${worker} (${RIGHOSTNAME}) has rebooted during to many miner restarts within 1h. [Miner was running for: $MinerTime]";
-
 		rm "$StatsJson" -f
 		sudo reboot
 		exit
@@ -436,8 +434,8 @@ sleep 0.3
 # Restart miner if hashrate less than MIN_TOTAL_HASH or 0
 if [[ "${hashRateInt}" = "0" || "${hashRateInt}" -lt "${MIN_Total_HASH}" ]];
 then
-    RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - TOTAL HASHARTE MISSMATCH: Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]";
-    notify "$(date "+%d.%m.%Y %T") - Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during total hashrate. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - TOTAL HASHARTE MISSMATCH: Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]";
+    notify "$(date "+%d.%m.%Y %T") - Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during total hashrate. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
     RestartMiner
     exit 1
 else
@@ -490,7 +488,7 @@ echo "TOTAL HASH: ${hashRate} hash";
 echo "YOUR MIN HASH: ${MIN_Total_HASH} hash";
 echo "GPUs: ${gpus}";
 echo "DRIVER: ${driver}";
-echo "HASHES PER GPU: ${miner_hashes}";
+echo "HASHES PER GPU: ${miner_hashes_raw}";
 echo "MEM PER GPU: ${gpu_mem}";
 echo "WATTS: ${watts_raw}";
 echo "FAN RPM: ${fanrpm}";

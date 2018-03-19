@@ -103,10 +103,8 @@ USER_KEY="";
 ##
 ### Usage ###
 
-rigcheck will run for example every 5 minutes via cronjob. If any soft error is located, your miner will be reatarted or rig will be 
-rebooted automatically. 
-In addition, each miner restart or rig reboot is logged in /var/log/rigcheck.log with date and time.
-Enjoy!
+If you setup your cronjob, rigcheck.sh will run and check some conditions every 5 minutes. If any soft error is located, your miner will be restarted (minestop). On some conditions like adl_error, GPU error your rig will be 
+rebooted automatically. In addition, each miner restart or rig reboot is logged in /home/ethos/rigcheck.log with date and time and error.
 
 ### Optional scripts ###
  
@@ -157,34 +155,37 @@ Try bash, calling sh make bash switch to posix mode and gives you some error
 ``` bash /home/ethos/rigcheck.sh ```
 
 Your results will be like this:
-``` 
-[ OK ] NO GPU CLOCK PROBLEM DETECTED
-[ OK ] NO GPU CRASH DETECTED
-[ OK ] NO GPU LOST DETECTED
-[ OK ] FAN RPM SEEMS TO BE OK
-[ OK ] POWER CABLE SEEMS TO BE OKAY AND WORKING
-[ OK ] NO HARDWARE ERROR DETECTED
-[ OK ] NO OVERHEAT DETECTED
-[ OK ] HASHRATE SEEMS TO BE OK. 24.16 (INT 24) hash
-[ OK ] NO POSSIBLE MINER STALL DETECTED
-[ OK ] GPU WATTAGE SEEMS TO BE OK
-
+```
+STATUS OK: GPU[0] HASH:24.72 WATTS:105 CORE:1746 MEM:4666 FANRPM:3150
+STATUS OK: GPU[1] HASH:24.71 WATTS:104 CORE:1771 MEM:4666 FANRPM:3150
+STATUS OK: GPU[2] HASH:24.70 WATTS:106 CORE:1797 MEM:4666 FANRPM:3150
+STATUS OK: GPU[3] HASH:24.71 WATTS:104 CORE:1809 MEM:4666 FANRPM:3150
+STATUS OK: NO GPU CLOCK PROBLEM DETECTED
+STATUS OK: NO GPU CRASH DETECTED
+STATUS OK: NO GPU LOST DETECTED
+STATUS OK: FAN RPM SEEMS TO BE OK
+STATUS OK: POWER CABLE SEEMS TO BE OKAY AND WORKING
+STATUS OK: NO HARDWARE ERROR DETECTED
+STATUS OK: NO GPUS OVERHEATED
+STATUS OK: TOTAL HASHRATE SEEMS TO BE OK. 98.83 (INT 98) hash
+STATUS OK: NO POSSIBLE MINER STALL DETECTED
 
 ##### VISUAL CONTROL #####
 STRATUM: enabled
-MINER: claymore v11.0
-TOTAL HASH: 24.16 hash
+MINER: claymore v11.5
+ running for 5h:54m:51s
+TOTAL HASH: 98.83 hash
 YOUR MIN HASH:  hash
-GPUs: 1
+GPUs: 4
 DRIVER: nvidia
-HASHES PER GPU: 24.16
-MEM PER GPU: 4576
-WATTS: 96
-FAN RPM: 3150
-UPTIME: 34 minutes
 AUTO REBOOTS 3
+REBOOT ON TO MANY MINER RESTARTS: 0/5
 ##### VISUAL CONTROL END #####
+
+Rig rig2 seems to work properly since 5 hours, 57 minutes.
 ```
+
+Enjoy!
 
 
 

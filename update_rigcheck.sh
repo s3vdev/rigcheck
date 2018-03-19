@@ -58,19 +58,17 @@ do
 	# This one copies the rigcheck script
 	sshpass -p ${pass} scp ./rigcheck.sh ${user}@$sname:/home/ethos/
 
+    ##
+    # This one set chmod 755 to rigcheck.sh
+	sshpass -p${pass} ssh ${user}@$sname chmod a+x /home/ethos/rigcheck.sh
+
+
 	##
 	# Uncomment this when you are installing the first time/updating the config file
 	if [ "${copyConfig}" = "1" ]; then
 	    sshpass -p ${pass} scp ./rigcheck_config.sh ethos@$sname:/home/ethos/
 	    sshpass -p${pass} ssh ${user}@$sname chmod a+x /home/ethos/rigcheck_config.sh
     fi
-
-    ##
-    # This one set chmod 755 to rigcheck.sh
-	sshpass -p${pass} ssh ${user}@$sname chmod a+x /home/ethos/rigcheck.sh
-	##
-	# Sometimes you must run this command (and disable the other one!)
-	#sshpass -p${pass} ssh -o StrictHostKeyChecking=no ${user}@$sname chmod a+x /home/ethos/rigcheck.sh
 
     GreenEcho "Successfully copied to ${sname[$Index]}"
 

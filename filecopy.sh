@@ -13,9 +13,12 @@
 ##
 # Insert IP addressess for your Ethos Rigs. CHANGE THESE EXAMPLES
 ethoservers=(
-#"192.168.1.1"
-#"192.168.1.2"
-#"192.168.1.3"
+"192.168.1.57"
+"192.168.1.74"
+"192.168.1.85"
+"192.168.1.41"
+"192.168.1.22"
+"192.168.1.37"
 )
 
 ##
@@ -38,16 +41,26 @@ Index=0
 echo "Please enter the file that you would like to transfer to your ethOS rigs e.g. rigcheck.sh, followed by [ENTER]:"
 read file
 
-for sname in "${ethoservers[@]}"
-do
+##
+# Check if file exists
+if [ -f "$file" ]
+then
 
-    ##
-	# This one copies the file to your rigs
-	sshpass -p ${pass} scp ./${file} ${user}@$sname:/home/ethos/
+	for sname in "${ethoservers[@]}"
+    do
+        ##
+        # This one copies the file to your rigs
+        sshpass -p ${pass} scp ./${file} ${user}@$sname:/home/ethos/
 
-    ##
-    # This one set chmod 755 to file on your rigs
-	sshpass -p${pass} ssh ${user}@$sname chmod a+x /home/ethos/${file}
+        ##
+        # This one set chmod 755 to file on your rigs
+        sshpass -p${pass} ssh ${user}@$sname chmod a+x /home/ethos/${file}
 
-    GreenEcho "${file} successfully copied to ${sname[$Index]}"
-done
+        GreenEcho "${file} successfully copied to ${sname[$Index]}"
+    done
+
+else
+	RedEcho "$file not found."
+fi
+
+

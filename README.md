@@ -52,21 +52,23 @@ Insert the following line to run cronjob every 5 minutes:
 
 Open rigcheck_config.sh and set your main vars - Telegram or Pushover vars (or booth) to get instant notifications.
 
-``` RebootMaxRestarts="5"; ```
+``` 
+RebootMaxRestarts="5";
 
-``` MIN_HASHRATE_GPU="20"; ```
+MIN_HASHRATE_GPU="20";
 
-``` MIN_TOTAL_HASH="90"; ```
+MIN_TOTAL_HASH="90";
 
-``` LOW_WATT="80"; ```
+LOW_WATT="80";
 
-``` TOKEN="43XXXXXX82:AAGRZjsXXXXXXXXXXlcPeyl1njlxIy60yg"; ```
+TOKEN="43XXXXXX82:AAGRZjsXXXXXXXXXXlcPeyl1njlxIy60yg";
 
-``` CHAT_ID="2XXXXXXX34"; ```
+CHAT_ID="2XXXXXXX34";
 
-``` APP_TOKEN=""; ```
+APP_TOKEN="";
 
-``` USER_KEY=""; ```
+USER_KEY=""; 
+```
 
 
 Finish :-)

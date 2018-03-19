@@ -17,9 +17,9 @@
 ##
 # Insert IP addressess for your Ethos Rigs. CHANGE THESE EXAMPLES
 ethoservers=(
-"192.168.1.1"
-"192.168.1.2"
-"192.168.1.3"
+#"192.168.1.1"
+#"192.168.1.2"
+#"192.168.1.3"
 )
 
 ##
@@ -36,6 +36,20 @@ GreenEcho(){ echo -e "$(tput setaf 2)$1$(tput sgr0)"; }
 YellowEcho(){ echo -e "$(tput setaf 3)$1$(tput sgr0)"; }
 
 Index=0
+copyConfig=0
+
+echo "";
+GreenEcho "Do you want to copy the rigcheck_config.sh file to your rigs as well?";
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes )
+
+        copyConfig=1
+
+        break;;
+        No )break;;
+    esac
+done
 
 for sname in "${ethoservers[@]}"
 do
@@ -46,7 +60,10 @@ do
 
 	##
 	# Uncomment this when you are installing the first time/updating the config file
-	#scp ./rigcheck.config ethos@$sname:/home/ethos/
+	if [ "${copyConfig}" = "1" ]; then
+	    sshpass -p ${pass} scp ./rigcheck_config.sh ethos@$sname:/home/ethos/
+	    sshpass -p${pass} ssh ${user}@$sname chmod a+x /home/ethos/rigcheck_config.sh
+    fi
 
     ##
     # This one set chmod 755 to rigcheck.sh

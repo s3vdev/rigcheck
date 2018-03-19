@@ -20,9 +20,6 @@ ethoservers=(
 "192.168.1.1"
 "192.168.1.2"
 "192.168.1.3"
-"192.168.1.4"
-"192.168.1.5"
-"192.168.1.6"
 )
 
 ##
@@ -33,9 +30,17 @@ user="ethos";
 # ethOS Password
 pass="live";
 
+
+RedEcho(){ echo -e "$(tput setaf 1)$1$(tput sgr0)"; }
+GreenEcho(){ echo -e "$(tput setaf 2)$1$(tput sgr0)"; }
+YellowEcho(){ echo -e "$(tput setaf 3)$1$(tput sgr0)"; }
+
+Index=0
+
 for sname in "${ethoservers[@]}"
 do
-	##
+
+    ##
 	# This one copies the rigcheck script
 	sshpass -p ${pass} scp ./rigcheck.sh ${user}@$sname:/home/ethos/
 
@@ -50,6 +55,6 @@ do
 	# Sometimes you must run this command (and disable the other one!)
 	#sshpass -p${pass} ssh -o StrictHostKeyChecking=no ${user}@$sname chmod a+x /home/ethos/rigcheck.sh
 
+    GreenEcho "Successfully copied to ${sname[$Index]}"
 
-	#TODO add crontab entry if not already there
 done

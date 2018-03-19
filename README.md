@@ -80,43 +80,43 @@ In addition, each miner restart or rig reboot is logged in /var/log/rigcheck.log
 Enjoy!
 
 ### Optional scripts ###
+ 
+##
+> #### rigcheck_autoupdater.sh ####
+> Download rigcheck_autoupdater.sh to /home/ethOS to get automatically updates and notifications, if a new version of rigcheck is found in this repository.
+> If you wish to get automatically updates just edit only ONE var:
+> 
+> ``` autoUpdate="yes"; ```
+> 
+> Set chmod
+> 
+> ``` chmod a+x /home/ethos/rigcheck_autoupdater.sh ```
+> 
+> Run as cronjob, every day at 0pm
+> 
+> ``` sudo crontab -e ```
+> 
+> 
+> ``` 0 0 * * * /home/ethos/rigcheck_autoupdater.sh ```
+> 
 
 ##
-#### rigcheck_autoupdater.sh ####
-Download rigcheck_autoupdater.sh to /home/ethOS to get automatically updates and notifications, if a new version of rigcheck is found in this repository.
-If you wish to get automatically updates just edit only ONE var:
-
-``` autoUpdate="yes"; ```
-
-Set chmod
-
-``` chmod a+x /home/ethos/rigcheck_autoupdater.sh ```
-
-Run as cronjob, every day at 0pm
-
-``` sudo crontab -e ```
-
-
-``` 0 0 * * * /home/ethos/rigcheck_autoupdater.sh ```
-
+> #### rigcontrol.sh - Telegram Bot ####
+> If you wish that you can control your ethOS Mining Rig than download rigstatuscontrol.sh and rigcontrol.sh to your folder /home/ethOS to manage your rig via Telegram Messenger.
+> 
+> ![Showcase](https://i.imgur.com/GESZMmV.jpg)
+> 
+> See it in action: https://vimeo.com/260455169
+> 
+> Install Video: https://vimeo.com/260577442
+> 
+> Repository: https://bitbucket.org/s3v3n/rigcontrol
+> 
 
 ##
-#### rigcontrol.sh - Telegram Bot ####
-If you wish that you can control your ethOS Mining Rig than download rigstatuscontrol.sh and rigcontrol.sh to your folder /home/ethOS to manage your rig via Telegram Messenger.
-
-![Showcase](https://i.imgur.com/GESZMmV.jpg)
-
-See it in action: https://vimeo.com/260455169
-
-Install Video: https://vimeo.com/260577442
-
-Repository: https://bitbucket.org/s3v3n/rigcontrol
-
-
-##
-#### update_rigcheck.sh ####
-This little shell script helps you to update ALL your ethos mining rigs by enter only one command to your terminal.
-
+> #### update_rigcheck.sh ####
+> This little shell script helps you to update ALL your ethos mining rigs by enter only one command to your terminal.
+> 
 
 
 

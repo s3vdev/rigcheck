@@ -25,33 +25,36 @@ Include with Telegram and Pushover.net notifications.
 
 ##
 ### Install rigcheck.sh to ethos ###
+Install rigcheck in two ways:
++ Automatically via *install.sh* script or
++ Manually
 
-+ You can install rigcheck automatically with *install.sh* script or do the old manual way:
 
-Connect to you mining rig (directly or via ssh).
- 
-cd /home/ethos
+Connect to you mining rig (via Filezilla SFTP or via SSH). 
+User: ethos, Pass: live
 
-``` nano rigcheck.sh ```
+#### via Filezilla: ####
+1. Navigate to /home/ethos
+2. Upload rigcheck.sh AND rigcheck_config.sh to that directory
+3. Change chmod to 755
+4. Open your SSH terminal via Putty or any other ssh client
+5. Type "sudo crontab -e"
+6. Insert: "*/5 * * * * /home/ethos/rigcheck.sh"
+7. Edit your vars in rigcheck_config.sh
+8. Finished!
 
-``` nano rigcheck_config.sh ```
+#### via SSH: ####
+1. nano rigcheck.sh
+2. Insert the complete script from rigcheck.sh here
+3. CMD + X (mac) or STRG + X (Win) to save and close
+4. Repeat this step with rigcheck_config.sh
+5. Type: "chmod a+x rigcheck.sh" and "chmod a+x rigcheck_config.sh"
+6. Create a cronjob: "sudo crontab -e"
+7. Insert: */5 * * * * /home/ethos/rigcheck.sh
+8. Edit your vars in rigcheck_config.sh
+9. Finished!
 
-copy&paste the content from rigcheck.sh and rigcheck_config.sh OR upload rigcheck.sh and rigcheck_config.sh directly to your rig in /home/ethos
-
-``` chmod a+x rigcheck.sh ```
-
-``` chmod a+x rigcheck_config.sh ```
-
-Create an cronjob to and let your script run every 5m.
-
-``` sudo crontab -e ```
-
-Insert the following line to run cronjob every 5 minutes:
-
-``` */5 * * * * /home/ethos/rigcheck.sh ```
-
-Open rigcheck_config.sh and set your main vars - Telegram or Pushover vars (or booth) to get instant notifications.
-
+rigcheck_config.sh
 ``` 
 RebootMaxRestarts="5";
 
@@ -69,9 +72,6 @@ APP_TOKEN="";
 
 USER_KEY=""; 
 ```
-
-
-Finish :-)
 
 ##
 ### Usage ###

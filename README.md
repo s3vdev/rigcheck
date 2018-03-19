@@ -71,7 +71,6 @@ rigcheck_config.sh
 
 
 #### Pushover.net - Push notification gateway ####
-
 Get push notifications to your iOS, Android or Windows Phone or Tablet.
 Just register your free account and application and get all status message from ethOS to your Phone.
 Please edit this new variables to activate push notification services: 

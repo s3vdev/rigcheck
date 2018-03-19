@@ -149,7 +149,7 @@ rebooted automatically. In addition, each miner restart or rig reboot is logged 
 
 ##
 > #### filecopy.sh (new) ####
-> ![Showcase](https://i.imgur.com/sOGwDcO.png)
+> ![Showcase](https://i.imgur.com/w8fq7uM.png)
 > This little shell script helps you to copy a file to ALL your ethos mining rigs by enter only one command to your terminal.
 >
 > See it in action: https://vimeo.com/260784823

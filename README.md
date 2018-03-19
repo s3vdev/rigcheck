@@ -50,7 +50,7 @@ Insert the following line to run cronjob every 5 minutes:
 
 ``` */5 * * * * /home/ethos/rigcheck.sh ```
 
-Open rigcheck_config.sh and set your vars like MIN_HASH or LOW_WATT and Telegram or Pushover vars (or booth) to get instant notifications.
+Open rigcheck_config.sh and set your main vars - Telegram or Pushover vars (or booth) to get instant notifications.
 
 ``` RebootMaxRestarts="5"; ```
 

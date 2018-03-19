@@ -26,7 +26,7 @@ Include with Telegram and Pushover.net notifications.
 ##
 ### Install rigcheck.sh to ethos ###
 
-*new Now you can install rigchek automatically with *install.sh* script or do the old manual way:
++ You can install rigcheck automatically with *install.sh* script or do the old manual way:
 
 Connect to you mining rig (directly or via ssh).
  

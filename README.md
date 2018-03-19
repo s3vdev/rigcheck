@@ -55,7 +55,27 @@ User: ethos, Pass: live
 9. Finished!
 
 rigcheck_config.sh
-``` 
+```
+#### Notifications / Pushnotifications ####
+
+#### TELEGRAM ####
+1. Open your Telegram App
+2. GLOBAL SEARCH -> BotFather
+3. Create a new bot by typing/clicking /newbot
+4. Choose a user-friendly name for your bot, for example: awesomebot
+5. Choose a unique username for your bot (must ends with â€œbotâ€)
+6. copy your TOKEN e.g. 4334584910:AAEPmjlh84N62Lv3jGWEgOftlxxAfMhB1gs
+7. Start a conversation with your bot: GLOBAL SEARCH -> MY_BOT_NAME -> START
+8. To get the chat ID, open the following URL in your web-browser: https://api.telegram.org/bot[TOKEN]/getUpdates
+9. copy your chat id in var CHAT_ID and your token to TOKEN below
+
+
+#### Pushover.net - Push notification gateway ####
+
+Get push notifications to your iOS, Android or Windows Phone or Tablet.
+Just register your free account and application and get all status message from ethOS to your Phone.
+Please edit this new variables to activate push notification services: 
+
 RebootMaxRestarts="5";
 
 MIN_HASHRATE_GPU="20";
@@ -160,36 +180,8 @@ AUTO REBOOTS 3
 ```
 
 
-##
-#### Get status messages directly from your mining rigs if some errors occurred. ####
-
-#### TELEGRAM ####
-1. Open your Telegram App
-2. GLOBAL SEARCH -> BotFather
-3. Create a new bot by typing/clicking /newbot
-4. Choose a user-friendly name for your bot, for example: awesomebot
-5. Choose a unique username for your bot (must ends with â€œbotâ€)
-6. copy your TOKEN e.g. 4334584910:AAEPmjlh84N62Lv3jGWEgOftlxxAfMhB1gs
-7. Start a conversation with your bot: GLOBAL SEARCH -> MY_BOT_NAME -> START
-8. To get the chat ID, open the following URL in your web-browser: https://api.telegram.org/bot[TOKEN]/getUpdates
-9. copy your chat id in var CHAT_ID and your token to TOKEN below
-
-``` TOKEN="xyz" ```
-
-``` CHAT_ID="yxz" ```
 
 
-##
-#### Pushover.net - Push notification gateway ####
 
-Get push notifications to your iOS, Android or Windows Phone or Tablet.
-
-Just register your free account and application and get all status message from ethOS to your Phone.
-
-Please edit this new variables to activate push notification services: 
-
-``` APP_TOKEN="xyz" ```
-
-``` USER_KEY="yxz" ```
 
 

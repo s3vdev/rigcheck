@@ -1,7 +1,7 @@
-# rigcheck v.1.0.16 (March 2018) based on ethOS 1.3.x by Sven Mielke #
+### rigcheck v.1.0.16 (March 2018) based on ethOS 1.3.x by Sven Mielke ###
   
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
-Include with Telegram and Pushover.net notifications. 
+With Telegram and Pushover.net realtime notifications. 
 
 ![Showcase](https://i.imgur.com/UIWksVN.jpg)
 
@@ -26,9 +26,9 @@ Include with Telegram and Pushover.net notifications.
 ##
 ### Install rigcheck.sh to ethos ###
 Install rigcheck in two ways:
+
 + Automatically via *install.sh* script or
 + Manually
-
 
 Connect to you mining rig (via Filezilla SFTP or via SSH). 
 User: ethos, Pass: live
@@ -54,7 +54,15 @@ User: ethos, Pass: live
 8. Edit your vars in rigcheck_config.sh
 9. Finished!
 
-rigcheck_config.sh
+#### via install.sh script: ####
+1. Download install.sh to your /home/ethos folder
+2. Type "chmod a+x install.sh"
+3. Run "bash install.sh"
+4. Answer the question
+5. Finished!
+
+
+#### rigcheck_config.sh (necessary only on manual install) ####
 ```
 #### Notifications / Pushnotifications ####
 

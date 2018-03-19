@@ -145,6 +145,5 @@ then
 
 else
     GreenEcho "rigcheck seems to be up to date.";
-
     notify "Autoupdater Status: rigcheck seems to be up to date. More: https://bitbucket.org/s3v3n/rigcheck"
 fi

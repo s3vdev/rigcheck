@@ -45,7 +45,7 @@ User: ethos, Pass: live
 
 #### via SSH: ####
 1. nano rigcheck.sh
-2. Insert the complete script from rigcheck.sh here
+2. Copy & paste the complete script from rigcheck.sh
 3. CMD + X (mac) or STRG + X (Win) to save and close
 4. Repeat this step with rigcheck_config.sh
 5. Type: "chmod a+x rigcheck.sh" and "chmod a+x rigcheck_config.sh"

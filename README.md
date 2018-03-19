@@ -3,7 +3,7 @@
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
 With Telegram and Pushover.net realtime notifications. 
 
-![Showcase](https://i.imgur.com/UIWksVN.jpg)
+![Showcase](https://i.imgur.com/1JJ4Z5Q.jpg)
 
 ### UPDATES ###
 ##
@@ -131,7 +131,7 @@ rebooted automatically. In addition, each miner restart or rig reboot is logged 
 > #### rigcontrol.sh - Telegram Bot ####
 > If you wish that you can control your ethOS Mining Rig than download rigstatuscontrol.sh and rigcontrol.sh to your folder /home/ethOS to manage your rig via Telegram Messenger.
 > 
-> ![Showcase](https://i.imgur.com/GESZMmV.jpg)
+> ![Showcase](https://i.imgur.com/RZU6VOG.jpg)
 > 
 > See it in action: https://vimeo.com/260455169
 > 

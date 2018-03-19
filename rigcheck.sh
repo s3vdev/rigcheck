@@ -310,7 +310,7 @@ function Json2Array() {
 
 ##
 # SKIP CHECKS IF MINER IS RUNNING LESS THEN 5 MINUTES
-if [[ $MinerSeconds -gt 300 ]]; then
+if [[ "${MinerSeconds}" -gt 300 ]]; then
 
     Json2Array miner_hashes
     Json2Array watts

@@ -32,25 +32,42 @@ Connect to you mining rig (directly or via ssh).
  
 cd /home/ethos
 
-```nano rigcheck.sh```
+``` nano rigcheck.sh ```
 
-copy&paste the content from rigcheck.sh OR upload rigcheck.sh directly to your rig in /home/ethos
+``` nano rigcheck_config.sh ```
 
-```chmod a+x rigcheck.sh```
+copy&paste the content from rigcheck.sh and rigcheck_config.sh OR upload rigcheck.sh and rigcheck_config.sh directly to your rig in /home/ethos
+
+``` chmod a+x rigcheck.sh ```
+
+``` chmod a+x rigcheck_config.sh ```
 
 Create an cronjob to and let your script run every 5m.
 
-```sudo crontab -e```
+``` sudo crontab -e ```
 
 Insert the following line to run cronjob every 5 minutes:
 
-```*/5 * * * * /home/ethos/rigcheck.sh```
+``` */5 * * * * /home/ethos/rigcheck.sh ```
 
 Open rigcheck_config.sh and set your vars like MIN_HASH or LOW_WATT and Telegram or Pushover vars (or booth) to get instant notifications.
 
-``` MIN_HASH="0" ```
+``` RebootMaxRestarts="5"; ```
 
-``` LOW_WATT="0" ```
+``` MIN_HASHRATE_GPU="20"; ```
+
+``` MIN_TOTAL_HASH="90"; ```
+
+``` LOW_WATT="80"; ```
+
+``` TOKEN="43XXXXXX82:AAGRZjsXXXXXXXXXXlcPeyl1njlxIy60yg"; ```
+
+``` CHAT_ID="2XXXXXXX34"; ```
+
+``` APP_TOKEN=""; ```
+
+``` USER_KEY=""; ```
+
 
 Finish :-)
 

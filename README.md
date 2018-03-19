@@ -141,14 +141,14 @@ rebooted automatically. In addition, each miner restart or rig reboot is logged 
 > 
 
 ##
-> #### update_rigcheck.sh ####
-> This little shell script helps you to update ALL your ethos mining rigs by enter only one command to your terminal.
+> #### update_rigcheck.sh (old) ####
+> This little shell script helps you to update ALL your ethos mining rigs with rigcheck.sh and rigcheck_config.sh by enter only one command to your terminal.
 >
 > See it in action: https://vimeo.com/260760489
 > 
 
 ##
-> #### filecopy.sh ####
+> #### filecopy.sh (new) ####
 > This little shell script helps you to copy a file to ALL your ethos mining rigs by enter only one command to your terminal.
 >
 > See it in action: https://vimeo.com/260784823

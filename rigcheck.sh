@@ -308,28 +308,39 @@ function Json2Array() {
 }
 
 
-Json2Array miner_hashes
-Json2Array watts
-Json2Array core
-Json2Array mem
-Json2Array fanrpm
-Index=0
-for Value in "${miner_hashes[@]}"
-do
-    if [[ "${miner_hashes[$Index]/.*}" -lt $MIN_HASHRATE_GPU ]]; then
-        RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-        notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]"
-        RestartMiner
-    elif [[ "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
-        RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] WATTS:${watts[$Index]}.[Miner was running for: $MinerTime]" | tee -a "$LogFile"
-        notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]"
-        RestartMiner
-    else
-        GreenEcho "STATUS OK: GPU[$Index] HASH:${miner_hashes[$Index]} WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}"
-        sleep 0.3
-    fi
-    let Index++
-done
+##
+# SKIP CHECKS IF MINER IS RUNNING LESS THEN 5 MINUTES
+if [[ $MinerSeconds -gt 300 ]]; then
+
+    Json2Array miner_hashes
+    Json2Array watts
+    Json2Array core
+    Json2Array mem
+    Json2Array fanrpm
+
+    Index=0
+
+    for Value in "${miner_hashes[@]}"
+    do
+        if [[ "${miner_hashes[$Index]/.*}" -lt $MIN_HASHRATE_GPU ]]; then
+            RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+            notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]"
+            RestartMiner
+        elif [[ "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
+            RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] WATTS:${watts[$Index]}.[Miner was running for: $MinerTime]" | tee -a "$LogFile"
+            notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]"
+            RestartMiner
+        else
+            GreenEcho "STATUS OK: GPU[$Index] HASH:${miner_hashes[$Index]} WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}"
+            sleep 0.3
+        fi
+        let Index++
+    done
+
+else
+	echo "EXIT: Miner running for less then 5 minutes.[Miner running for: $MinerTime]"
+	exit
+fi
 
 
 

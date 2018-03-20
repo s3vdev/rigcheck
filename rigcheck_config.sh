@@ -34,8 +34,8 @@
 # 2. GLOBAL SEARCH -> BotFather
 # 3. Create a new bot by typing/clicking /newbot
 # 4. Choose a user-friendly name for your bot, for example: awesomebot
-# 5. Choose a unique username for your bot (must end with 'bot' )
-# 6. copy your <TOKEN> e.g. 4334584910:AAEPmjlh84N62Lv3jGWEgOftlxxAfMhB1gs
+# 5. Choose a unique username for your bot (must end with bot )
+# 6. copy your <TOKEN> e.g. 43XXXXXX82:AAGRZjsXXXXXXXXXXlcPeyl1njlxIy60yg
 # 7. Start a conversation with your bot: GLOBAL SEARCH -> MY_BOT_NAME -> START
 # 8. To get the chat ID, open the following URL in your web-browser:
 #    https://api.telegram.org/bot<TOKEN>/getUpdates
@@ -67,7 +67,7 @@ MIN_HASHRATE_GPU="";
 MIN_TOTAL_HASH="";
 
 # IF your wattage is less than LOW_WATT, your miner will restart automatically
-LOW_WATT="";
+LOW_WATT="80";
 
 
 # Telegram Gateway Service

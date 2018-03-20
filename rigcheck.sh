@@ -358,7 +358,7 @@ fi
 if [ "${gpucrashed}" -gt "0" ];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - GPU CRASHED: Rebooting during GPU clock problem: gpu clocks are too low. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. [Miner was running for: $MinerTime]"
+    notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: gpu clocks are too low. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
 else
@@ -376,7 +376,7 @@ then
     if [ -n "${nvidiaErrorCheck}" ];
         then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - GPU LOST: Rebooting during GPU ERROR. Error was: GPU LOST. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-            notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU ERROR. Error was: GPU LOST. [Miner was running for: $MinerTime]"
+            notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU ERROR. Error was: GPU LOST. [Miner was running for: $MinerTime]"
             RestartMiner
             exit 1
         else
@@ -392,7 +392,7 @@ sleep 0.3
 if [ "${fanCount}" -lt "${gpuCount}" ];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - FAN ERROR: Rebooting during FAN ERROR. Fan RPM was: ${fanrpm_raw}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm_raw}. [Miner was running for: $MinerTime]"
+    notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME}) has rebooted during FAN ERROR. Fan RPM was: ${fanrpm_raw}. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
 else
@@ -406,7 +406,7 @@ sleep 0.3
 if [ -n "${no_cables}" ];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - POWER CABLE PROBLEM: PCI-E power cables not seated properly! [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) Power cable problem: PCI-E power cables not seated properly. [Miner was running for: $MinerTime]"
+    notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME}) Power cable problem: PCI-E power cables not seated properly. [Miner was running for: $MinerTime]"
     #RestartMiner
     #exit 1
 else
@@ -420,7 +420,7 @@ sleep 0.3
 if [ -n "${adl_error}" ];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - HARDWARE ERROR: Possible gpu/riser/power failure! [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) Hardware error: possible gpu/riser/power failure. [Miner was running for: $MinerTime]"
+    notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME}) Hardware error: possible gpu/riser/power failure. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
 else
@@ -434,7 +434,7 @@ sleep 0.3
 if [ -n "${overheat}" ];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - OVERHEAT: One or more GPUS overheated! [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) Overheat: one or more gpus overheated"
+    notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME}) Overheat: one or more gpus overheated"
     RestartMiner
     exit 1
 else
@@ -449,7 +449,7 @@ sleep 0.3
 if [[ "${hashRateInt}" = "0" || "${hashRateInt}" -lt "${MIN_Total_HASH}" ]];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - TOTAL HASHARTE MISSMATCH: Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]";
-    notify "$(date "+%d.%m.%Y %T") - Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during total hashrate. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    notify "$(date "+%d.%m.%Y %T")"$'\n'"Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during total hashrate. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
     RestartMiner
     exit 1
 else
@@ -479,7 +479,7 @@ sleep 0.3
 if [ -n "${miner_stall}" ];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - MINER STALL: Rebooting during MINER STALL. Miner has been working for a while, but hash is zero. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. [Miner was running for: $MinerTime]"
+    notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME}) has rebooted during MINER STALL. Miner has been working for a while, but hash is zero. [Miner was running for: $MinerTime]"
     RestartMiner
     exit 1
 else

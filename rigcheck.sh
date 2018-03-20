@@ -263,7 +263,7 @@ notify () {
 ### EXIT IF STATS.JSON IS MISSING
 if [[ ! -f "$StatsJson" ]]; then
 	echo "$(date "+%d.%m.%Y %T") EXIT: stats.json not available yet.(make sure ethosdistro is ver: 1.3.0+)" | tee -a "$LogFile"
-	notify "Rig ${worker} (${RIGHOSTNAME}) Error: stats.json not available yet.(make sure ethOS is ver: 1.3.0+. Run sudo ethos-update in your terminal.";
+	notify "Rig ${worker} (${RIGHOSTNAME})"$'\n'"Error: stats.json not available yet.(make sure ethOS is ver: 1.3.0+. Run sudo ethos-update in your terminal.";
 	exit 1
 fi
 
@@ -324,11 +324,11 @@ if [[ "${MinerSeconds}" -gt 300 ]]; then
     do
         if [[ "${miner_hashes[$Index]/.*}" -lt $MIN_HASHRATE_GPU ]]; then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-            notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]"
+            notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME})"$'\n'"RESTART [hash < min_hashrate_gpu]"$'\n'"GPU[$Index]"$'\n'"HASH:${miner_hashes[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
             RestartMiner
         elif [[ "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] WATTS:${watts[$Index]}.[Miner was running for: $MinerTime]" | tee -a "$LogFile"
-            notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) RESTART: GPU[$Index] WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]"
+            notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME})"$'\n'"RESTART [watts < low_watt]"$'\n'"GPU[$Index]"$'\n'"WATTS:${watts[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
             RestartMiner
         else
             GreenEcho "STATUS OK: GPU[$Index] HASH:${miner_hashes[$Index]} WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}"
@@ -347,7 +347,7 @@ fi
 if [ "${defunct}" -gt "0" ];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - GPU CLOCK PROBLEM: GPU clock problem: gpu clocks are too low - TRYING TO REBOOT THE RIG!" | tee -a "$LogFile"
-    notify "$(date "+%d.%m.%Y %T") - Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: GPU HASH:${hashRate}. [Miner was running for: $MinerTime]"
+    notify "$(date "+%d.%m.%Y %T")"$'\n'"Rig ${worker} (${RIGHOSTNAME}) has rebooted during GPU clock problem: GPU HASH:${hashRate}. [Miner was running for: $MinerTime]"
     RestartMiner
 else
     GreenEcho "STATUS OK: NO GPU CLOCK PROBLEM DETECTED";

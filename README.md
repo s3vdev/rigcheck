@@ -71,7 +71,7 @@ User: ethos, Pass: live
 2. GLOBAL SEARCH -> BotFather
 3. Create a new bot by typing/clicking /newbot
 4. Choose a user-friendly name for your bot, for example: awesomebot
-5. Choose a unique username for your bot (must ends with â€œbotâ€)
+5. Choose a unique username for your bot (must ends with bot)
 6. copy your TOKEN e.g. 43XXXXXX82:AAGRZjsXXXXXXXXXXlcPeyl1njlxIy60yg
 7. Start a conversation with your bot: GLOBAL SEARCH -> MY_BOT_NAME -> START
 8. To get the chat ID, open the following URL in your web-browser: https://api.telegram.org/bot[TOKEN]/getUpdates

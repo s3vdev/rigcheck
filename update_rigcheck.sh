@@ -38,6 +38,13 @@ YellowEcho(){ echo -e "$(tput setaf 3)$1$(tput sgr0)"; }
 Index=0
 copyConfig=0
 
+##
+# Ask for file to copy
+#echo "Please enter the file that you would like to transfer to your ethOS rigs, followed by [ENTER]:"
+#read file
+
+#read reboot_max_restarts
+
 echo "";
 GreenEcho "Do you want to copy the rigcheck_config.sh file to your rigs as well?";
 select yn in "Yes" "No"; do

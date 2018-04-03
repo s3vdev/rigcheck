@@ -58,6 +58,10 @@ GreenEcho(){ echo -e "$(tput setaf 2)$1$(tput sgr0)"; }
 YellowEcho(){ echo -e "$(tput setaf 3)$1$(tput sgr0)"; }
 
 ##
+# Get human uptime
+human_uptime="$(/opt/ethos/bin/human_uptime)";
+
+##
 # Include user config file
 . /home/ethos/rigcheck_config.sh
 
@@ -101,9 +105,7 @@ stats () {
 # Get worker name for Pushover service
 worker="$(/opt/ethos/sbin/ethos-readconf worker)";
 
-##
-# Get human uptime
-human_uptime="$(/opt/ethos/bin/human_uptime)";
+
 
 ##
 # Check bioses or powertune to get nvidia "Unable to determine.." error
@@ -263,7 +265,7 @@ notify () {
 ### EXIT IF STATS.JSON IS MISSING
 if [[ ! -f "$StatsJson" ]]; then
 	echo "$(date "+%d.%m.%Y %T") EXIT: stats.json not available yet.(make sure ethosdistro is ver: 1.3.0+)" | tee -a "$LogFile"
-	notify "Rig ${worker} (${RIGHOSTNAME})"$'\n'"Error: stats.json not available yet.(make sure ethOS is ver: 1.3.0+. Run sudo ethos-update in your terminal.";
+	notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"Error: stats.json not available yet.(make sure ethOS is ver: 1.3.0+. Run sudo ethos-update in your terminal.";
 	exit 1
 fi
 
@@ -324,11 +326,11 @@ if [[ "${MinerSeconds}" -gt 300 ]]; then
     do
         if [[ "${miner_hashes[$Index]/.*}" -lt $MIN_HASHRATE_GPU ]]; then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
-            notify "Rig ${worker} (${RIGHOSTNAME})"$'\n'"RESTART [hash < min_hashrate_gpu]"$'\n'"GPU[$Index]"$'\n'"HASH:${miner_hashes[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
+            notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"RESTART [hash < min_hashrate_gpu]"$'\n'"GPU[$Index]"$'\n'"HASH:${miner_hashes[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
             RestartMiner
         elif [[ "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] WATTS:${watts[$Index]}.[Miner was running for: $MinerTime]" | tee -a "$LogFile"
-            notify "Rig ${worker} (${RIGHOSTNAME})"$'\n'"RESTART [watts < low_watt]"$'\n'"GPU[$Index]"$'\n'"WATTS:${watts[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
+            notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"RESTART [watts < low_watt]"$'\n'"GPU[$Index]"$'\n'"WATTS:${watts[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
             RestartMiner
         else
             GreenEcho "STATUS OK: GPU[$Index] HASH:${miner_hashes[$Index]} WATTS:${watts[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}"

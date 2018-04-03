@@ -448,10 +448,10 @@ sleep 0.3
 
 
 # Restart miner if hashrate less than MIN_TOTAL_HASH or 0
-if [[ "${hashRateInt}" = "0" || "${hashRateInt}" -lt "${MIN_Total_HASH}" ]];
+if [[ "${hashRateInt}" = "0" || "${hashRateInt}" -lt "${MIN_TOTAL_HASH}" ]];
 then
-    RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - TOTAL HASHARTE MISSMATCH: Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]";
-    notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during total hashrate. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_Total_HASH}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+    RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - TOTAL HASHARTE MISSMATCH: Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_TOTAL_HASH}. [Miner was running for: $MinerTime]";
+    notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during total hashrate. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_TOTAL_HASH}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
     RestartMiner
     exit 1
 else
@@ -500,7 +500,7 @@ echo "STRATUM: ${stratum_check}";
 echo "MINER: ${miner} ${miner_version}";
 echo " running for ${MinerTime}";
 echo "TOTAL HASH: ${hashRate} hash";
-echo "YOUR MIN HASH: ${MIN_Total_HASH} hash";
+echo "YOUR MIN HASH: ${MIN_TOTAL_HASH} hash";
 echo "GPUs: ${gpus}";
 echo "DRIVER: ${driver}";
 #echo "HASHES PER GPU: ${miner_hashes_raw}";

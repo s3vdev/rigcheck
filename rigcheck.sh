@@ -197,7 +197,7 @@ miner_stall="$(cat /var/run/ethos/status.file | grep "possible miner stall: chec
 
 ##
 # Rounding decimal hashrate values to INT (Thanks to Martin Lukas)
-hashRateInt=${hashRate%.*}
+hashRateInt=${hashRate%.*};
 
 ##
 # Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
@@ -205,11 +205,11 @@ watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \
 
 ##
 # Get miner runtime in seconds
-MinerSeconds=$(stats "miner_secs")
+MinerSeconds=$(stats "miner_secs");
 
 ##
 # stats.josn ethOS ver. 1.3.x
-StatsJson="/var/run/ethos/stats.json"
+StatsJson="/var/run/ethos/stats.json";
 
 
 ##
@@ -505,7 +505,15 @@ echo "GPUs: ${gpus}";
 echo "DRIVER: ${driver}";
 #echo "HASHES PER GPU: ${miner_hashes_raw}";
 #echo "MEM PER GPU: ${gpu_mem}";
-#echo "WATTS: ${watts_raw}";
+
+# Check if we're on nvidia rigs so we can grep watts of GPUs
+if [ "${driver}" = "nvidia" ];
+then
+    echo "WATTS: ${watts_raw}";
+else
+    echo "WATTS: (NOT AVAILABLE ON AMD GPUS)"
+fi
+
 #echo "FAN RPM: ${fanrpm_raw}";
 #echo "UPTIME: ${human_uptime}";
 #echo "AUTO REBOOTS ${auto_reboots}";

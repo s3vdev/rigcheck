@@ -201,7 +201,9 @@ hashRateInt=${hashRate%.*};
 
 ##
 # Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
-watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \t]*//')";
+if [ "${driver}" = "nvidia" ]; then
+    watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \t]*//')";
+fi
 
 ##
 # Get miner runtime in seconds
@@ -328,7 +330,7 @@ if [[ "${MinerSeconds}" -gt 300 ]]; then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
             notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"RESTART [hash < min_hashrate_gpu]"$'\n'"GPU[$Index]"$'\n'"HASH:${miner_hashes[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
             RestartMiner
-        elif [[ "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
+        elif [[ "${driver}" = "nvidia" && "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] WATTS:${watts[$Index]}.[Miner was running for: $MinerTime]" | tee -a "$LogFile"
             notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"RESTART [watts < low_watt]"$'\n'"GPU[$Index]"$'\n'"WATTS:${watts[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
             RestartMiner
@@ -452,6 +454,7 @@ if [[ "${hashRateInt}" = "0" || "${hashRateInt}" -lt "${MIN_TOTAL_HASH}" ]];
 then
     RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - TOTAL HASHARTE MISSMATCH: Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_TOTAL_HASH}. [Miner was running for: $MinerTime]";
     notify "Miner (${miner}) on Rig ${worker} (${RIGHOSTNAME}) has restarted during total hashrate. Total hashrate was: ${hashRate} hash (hashes per GPU: ${miner_hashes_raw}). Your MIN_HASH is ${MIN_TOTAL_HASH}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
+
     RestartMiner
     exit 1
 else

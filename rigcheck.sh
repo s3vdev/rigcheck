@@ -57,9 +57,6 @@ RedEcho(){ echo -e "$(tput setaf 1)$1$(tput sgr0)"; }
 GreenEcho(){ echo -e "$(tput setaf 2)$1$(tput sgr0)"; }
 YellowEcho(){ echo -e "$(tput setaf 3)$1$(tput sgr0)"; }
 
-##
-# Get human uptime
-human_uptime="$(/opt/ethos/bin/human_uptime)";
 
 ##
 # Include user config file
@@ -77,6 +74,11 @@ fi
 ##
 # Using total seconds from uptime (Thanks to Martin Lukas)
 upinseconds="$(cat /proc/uptime | cut -d"." -f1)";
+
+##
+# Get human uptime
+human_uptime="$(/opt/ethos/bin/human_uptime)";
+
 
 ##
 # if we haven't had a minumum of 15 minutes (900 seconds) since system started, bail
@@ -104,8 +106,6 @@ stats () {
 ##
 # Get worker name for Pushover service
 worker="$(/opt/ethos/sbin/ethos-readconf worker)";
-
-
 
 ##
 # Check bioses or powertune to get nvidia "Unable to determine.." error
@@ -260,6 +260,13 @@ notify () {
             --form-string "user=${USER_KEY}" \
             --form-string "message=${1}" \
             https://api.pushover.net/1/messages.json >> /dev/null
+  fi
+
+  if [[ -n "${API_URL}"  && -n "${API_URL_TOKEN}" ]];
+  then
+    echo "Sending data to self hosted API...";
+    #Self hosted API notification
+    curl -s -X POST "${API_URL}"/service.php -d token="${API_URL_TOKEN}" -d text="${1}" -d rig="${worker} (${RIGHOSTNAME})" >> /dev/null
   fi
 }
 

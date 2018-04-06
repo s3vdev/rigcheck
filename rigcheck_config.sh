@@ -58,7 +58,7 @@
 ### BEGINN EDIT ###
 
 # REBOOT IF THERE ARE MORE THEN X MINER RESTARTS WITHIN 1H
-RebootMaxRestarts="";
+RebootMaxRestarts="5";
 
 # Min hash per GPU
 MIN_HASHRATE_GPU="";
@@ -67,7 +67,7 @@ MIN_HASHRATE_GPU="";
 MIN_TOTAL_HASH="";
 
 # IF your wattage is less than LOW_WATT, your miner will restart automatically
-LOW_WATT="80";
+LOW_WATT="";
 
 
 # Telegram Gateway Service
@@ -78,6 +78,15 @@ CHAT_ID="";
 # Pushover.net Gateway Service
 APP_TOKEN="";
 USER_KEY="";
+
+
+# Self hosted API URL (without "/" on end) for writing log files and sending emails
+API_URL="";
+
+# Self hosted API TOKEN (see service.php) for writing log files or sending emails
+API_URL_TOKEN="";
+
+
 
 # Cron has diff env, some paths aren't found. adjust
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/ethos/bin:/opt/ethos/sbin

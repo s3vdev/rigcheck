@@ -232,6 +232,14 @@ CHAT_ID="$chat_id";
 APP_TOKEN="$app_token";
 USER_KEY="$user_key";
 
+
+# Self hosted API URL (without "/" on end) for writing log files and sending emails
+API_URL="";
+
+# Self hosted API TOKEN (see service.php) for writing log files or sending emails
+API_URL_TOKEN="";
+
+
 # Cron has diff env, some paths aren't found. adjust
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/ethos/bin:/opt/ethos/sbin
 ### END EDIT ###

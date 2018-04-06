@@ -65,7 +65,11 @@ if ($your_token == $token)
 
 
     // Write log
-    $log = $email . ' - ' . $rig . ' - ' . $text . '<br>';
-    $log .= "=============================";
+    $log  = "Date: ".$_SERVER['REMOTE_ADDR'].' - '.date("F j, Y, g:i a") . PHP_EOL.
+            "E-Mail: " . $email . PHP_EOL.
+            "Rig: " . $rig . PHP_EOL.
+            "Reason: " . $text . PHP_EOL.
+            "-------------------------" . PHP_EOL;
+
     file_put_contents('logs.txt', $log . PHP_EOL , FILE_APPEND | LOCK_EX);
 }

@@ -9,7 +9,7 @@ With Telegram and Pushover.net realtime notifications.
 ##
 ##### v1.0.18 - 2018/04/15 #####
 + added watts check for amdgpu.
-+ ethOS now supports watts for amdgpus. You can see this under your stats.json under /var/run/ethos/stats.json:
++ ethOS now supports watts support for amdgpu's. You can see this under your stats.json under /var/run/ethos/stats.json:
 ```
 "driver": "amdgpu",
 "watts": "87 98 100 84 85 117 117 88", 

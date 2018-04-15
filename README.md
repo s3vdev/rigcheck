@@ -1,4 +1,4 @@
-### rigcheck v.1.0.17 (April 2018) based on ethOS 1.3.x by Sven Mielke ###
+### rigcheck v.1.0.18 (April 2018) based on ethOS 1.3.1+ by Sven Mielke ###
   
 If you have any errors in your ethOS rigcheck will restart your miner or reboot your system.
 With Telegram and Pushover.net realtime notifications. 
@@ -7,10 +7,17 @@ With Telegram and Pushover.net realtime notifications.
 
 ### UPDATES ###
 ##
+##### v1.0.18 - 2018/04/15 #####
++ added watts check for amdgpu.
++ ethOS now supports watts for amdgpus. You can see this under your stats.json under /var/run/ethos/stats.json:
+```
+"driver": "amdgpu",
+"watts": "87 98 100 84 85 117 117 88", 
+```
+
+##
 ##### v1.0.17 - 2018/04/06 #####
 + Added self hosted api to get notifications via email and logfiles (please update your rigcheck_config.sh manually).
-
-
 
 
 ##

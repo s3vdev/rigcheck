@@ -6,7 +6,7 @@
 #
 # Copyright 2018 Sven Mielke <web@ddl.bz>.
 #
-# Repository: https://bitbucket.org/s3v3n/rigcheck - v1.0.17.
+# Repository: https://bitbucket.org/s3v3n/rigcheck - v1.0.18.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -201,9 +201,9 @@ hashRateInt=${hashRate%.*};
 
 ##
 # Add watts check (best way to detect crash for Nvidia cards) (Thanks to Min Min)
-if [ "${driver}" = "nvidia" ]; then
+#if [ "${driver}" = "nvidia" ]; then
     watts_raw="$(/opt/ethos/bin/stats | grep watts | cut -d' ' -f2- | sed -e 's/^[ \t]*//')";
-fi
+#fi
 
 ##
 # Get miner runtime in seconds
@@ -273,8 +273,8 @@ notify () {
 
 ### EXIT IF STATS.JSON IS MISSING
 if [[ ! -f "$StatsJson" ]]; then
-	echo "$(date "+%d.%m.%Y %T") EXIT: stats.json not available yet.(make sure ethosdistro is ver: 1.3.0+)" | tee -a "$LogFile"
-	notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"Error: stats.json not available yet.(make sure ethOS is ver: 1.3.0+. Run sudo ethos-update in your terminal.";
+	echo "$(date "+%d.%m.%Y %T") EXIT: stats.json not available yet.(make sure ethosdistro is ver: 1.3.1+)" | tee -a "$LogFile"
+	notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"Error: stats.json not available yet.(make sure ethOS is ver: 1.3.1+. Run sudo ethos-update in your terminal.";
 	exit 1
 fi
 
@@ -337,7 +337,8 @@ if [[ "${MinerSeconds}" -gt 300 ]]; then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] HASH:${miner_hashes[$Index]} CORE:${core[$Index]} MEM:${mem[$Index]} FANRPM:${fanrpm[$Index]}. [Miner was running for: $MinerTime]" | tee -a "$LogFile"
             notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"RESTART [hash < min_hashrate_gpu]"$'\n'"GPU[$Index]"$'\n'"HASH:${miner_hashes[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
             RestartMiner
-        elif [[ "${driver}" = "nvidia" && "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
+        #elif [[ "${driver}" = "nvidia" && "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
+        elif [[ "${watts[$Index]/.*}" -lt $LOW_WATT ]]; then
             RedEcho "STATUS FAIL: $(date "+%d.%m.%Y %T") - RESTART: GPU[$Index] WATTS:${watts[$Index]}.[Miner was running for: $MinerTime]" | tee -a "$LogFile"
             notify "Rig ${worker} (${RIGHOSTNAME})"$'\n\n'"RESTART [watts < low_watt]"$'\n'"GPU[$Index]"$'\n'"WATTS:${watts[$Index]}"$'\n'"CORE:${core[$Index]}"$'\n'"MEM:${mem[$Index]}"$'\n'"FANRPM:${fanrpm[$Index]}."$'\n'"[Miner was running for: $MinerTime]"
             RestartMiner
@@ -517,12 +518,12 @@ echo "DRIVER: ${driver}";
 #echo "MEM PER GPU: ${gpu_mem}";
 
 # Check if we're on nvidia rigs so we can grep watts of GPUs
-if [ "${driver}" = "nvidia" ];
-then
+#if [ "${driver}" = "nvidia" ];
+#then
     echo "WATTS: ${watts_raw}";
-else
-    echo "WATTS: (NOT AVAILABLE ON AMD GPUS)"
-fi
+#else
+#    echo "WATTS: (NOT AVAILABLE ON AMD GPUS)"
+#fi
 
 #echo "FAN RPM: ${fanrpm_raw}";
 #echo "UPTIME: ${human_uptime}";

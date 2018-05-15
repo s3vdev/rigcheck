@@ -11,6 +11,11 @@
 ##
 
 ##
+# Set right chmod
+chmod 775 /home/ethos/filecopy.sh
+
+
+##
 # Insert IP addressess for your Ethos Rigs. CHANGE THESE EXAMPLES
 ethoservers=(
 "192.168.1.57"

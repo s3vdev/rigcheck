@@ -1,5 +1,10 @@
 #!/bin/bash
 
+##
+# Set right chmod
+chmod 775 /home/ethos/install.sh
+
+
 # Coloring consolen output
 RedEcho(){ echo -e "$(tput setaf 1)$1$(tput sgr0)"; }
 GreenEcho(){ echo -e "$(tput setaf 2)$1$(tput sgr0)"; }

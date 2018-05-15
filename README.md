@@ -44,7 +44,7 @@ Setup via GIT
 ----
 Clone the repository to your ethos home directory `/home/ethos`.
 ```bash
-$ git clone https://s3v3n@bitbucket.org/s3v3n/rigccheck.git
+$ git clone https://s3v3n@bitbucket.org/s3v3n/rigcheck.git
 ```
 
 Connect to you mining rig (via Filezilla SFTP or via SSH). 

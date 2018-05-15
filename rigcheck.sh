@@ -31,7 +31,7 @@
 # Run as cronjob, for example every 5 minutes
 #
 # Set chmod
-# chmod a+x /home/ethos/rigcheck.sh
+# chmod 775 /home/ethos/rigcheck.sh
 #
 # sudo crontab -e
 # */5 * * * * /home/ethos/rigcheck.sh

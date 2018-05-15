@@ -15,6 +15,10 @@
 ##
 
 ##
+# Set right chmod
+chmod 775 /home/ethos/update_rigcheck.sh
+
+##
 # Insert IP addressess for your Ethos Rigs. CHANGE THESE EXAMPLES
 ethoservers=(
 #"192.168.1.1"

@@ -31,7 +31,7 @@
 # Run as cronjob, every day at 0pm
 #
 # Set chmod
-# chmod a+x /home/ethos/rigcheck_autoupdater.sh
+# chmod 775 /home/ethos/rigcheck_autoupdater.sh
 #
 # sudo crontab -e
 # 0 0 * * * /home/ethos/rigcheck_autoupdater.sh
@@ -51,6 +51,9 @@
 # ENJOY!
 ###################################################################################
 
+##
+# Set right chmod
+chmod 775 /home/ethos/rigcheck_autoupdater.sh
 
 # If you wish that rigcheck can update itself, set autoUpdate to yes. Otherwise you get only a Telegram/Pushover notification about a new version.
 autoUpdate="yes";

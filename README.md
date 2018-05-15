@@ -39,15 +39,19 @@ With Telegram and Pushover.net realtime notifications.
 
 ##
 ### Install rigcheck.sh to ethos ###
-Install rigcheck in two ways:
 
-+ Automatically via *install.sh* script or
-+ Manually
+Setup via GIT
+----
+Clone the repository to your ethos home directory `/home/ethos`.
+```bash
+$ git clone https://s3v3n@bitbucket.org/s3v3n/rigccheck.git
+```
 
 Connect to you mining rig (via Filezilla SFTP or via SSH). 
 User: ethos, Pass: live
 
-#### via Filezilla: ####
+Setup via Filezilla
+----
 1. Navigate to /home/ethos
 2. Upload rigcheck.sh AND rigcheck_config.sh to that directory
 3. Change chmod to 755
@@ -57,7 +61,8 @@ User: ethos, Pass: live
 7. Edit your vars in rigcheck_config.sh
 8. Finished!
 
-#### via SSH: ####
+Setup via SSH
+----
 1. nano rigcheck.sh
 2. Copy & paste the complete script from rigcheck.sh
 3. CMD + X (mac) or STRG + X (Win) to save and close
